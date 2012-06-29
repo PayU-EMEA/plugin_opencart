@@ -1,0 +1,21 @@
+
+
+.payu_content_top {
+	position: relative;
+	text-align:right;
+	float:right;
+}
+.payu_content_bottom {
+	position: relative;
+	text-align:right;
+}
+.payu_column_left {
+	position: relative;
+	left:0px;
+	margin-right:30px;
+}
+.payu_column_right {
+	position: relative;
+	text-align:right;
+	margin-left:30px;
+}
