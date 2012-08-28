@@ -12,19 +12,19 @@ $_['text_payment']		= 'Płatność';
 // Entry
 $_['entry_merchantposid']		= 'Id punktu płatnośc:<br /><span class="help">OAuth protocol - client_id</span>';
 $_['entry_posauthkey']			= 'Klucz autoryzacji płatności:<br /><span class="help">pos_auth_key</span>';
-$_['entry_signaturekey']		= 'Klucz (MD5):<br /><span class="help">Protokół OAuth - client_secret</span>';
+$_['entry_clientsecret'] 		= 'Klucz (MD5):<br /><span class="help">Protokół OAuth - client_secret</span>';
 $_['entry_clientid'] 			= 'Client ID:<br /><span class="help">Protokół OAuth - client_id</span>';
-$_['entry_clientsecret'] 		= 'Drugi klucz (MD5):<br /><span class="help">Symetryczny klucz do szyfrowania komunikacji - secret key</span>';
-$_['entry_test']					= 'Sandbox:<br /><span class="help">środowisko testowe</span>';
+$_['entry_signaturekey']		= 'Drugi klucz (MD5):<br /><span class="help">Symetryczny klucz do szyfrowania komunikacji - secret key</span>';
+$_['entry_test']				= 'Sandbox:<br /><span class="help">środowisko testowe</span>';
 $_['entry_status']				= 'Status:';
 $_['entry_sort_order']			= 'Kolejność:';
 $_['entry_failed_status']		= 'Status: Failed<br /><span class="help">&nbsp;</span>';
-$_['entry_complete_status']	= 'Status: Completed <br /><span class="help">&nbsp;</span>';
+$_['entry_complete_status']		= 'Status: Completed <br /><span class="help">&nbsp;</span>';
 $_['entry_cancelled_status']	= 'Status: Cancelled <br /><span class="help">&nbsp;</span>';
 $_['entry_pending_status']		= 'Status: Pending <br /><span class="help">&nbsp;</span>';
 $_['entry_reject_status'] 		= 'Status: Rejected <br /><span class="help">&nbsp;</span>';
 $_['entry_sent_status'] 		= 'Status: Sent <br /><span class="help">&nbsp;</span>';
-$_['entry_returned_status']	= 'Status: Returned <br /><span class="help">&nbsp;</span>';
+$_['entry_returned_status']	    = 'Status: Returned <br /><span class="help">&nbsp;</span>';
 $_['entry_new_status']			= 'Status: New <br /><span class="help">&nbsp;</span>';
 $_['entry_button']				= 'Małe logo:<br /><span class="help">widoczne jako przycisk zatwierdzający płatność</span>';
 // Error
