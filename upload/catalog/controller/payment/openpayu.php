@@ -166,7 +166,7 @@ class ControllerPaymentOpenPayU extends Controller {
         echo	'<input type="hidden" name="sessionId" value="'.$_SESSION['sessionId'].'">';
         echo	'<input type="hidden" name="oauth_token" value="'.$result->getAccessToken().'">';
         echo '</form>';
-        echo '<script type="text/javascript">document.getElementById("payu_checkout").submit();</script>;';
+        echo '<script type="text/javascript">document.getElementById("payu_checkout").submit();</script>';
     }
 
 //Shipping update
