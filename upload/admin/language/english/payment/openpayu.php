@@ -4,7 +4,7 @@ $_['heading_title']     = 'PayU account';
 
 // Text
 $_['text_module']       = 'Modules';
-$_['text_openpayu']       = '<a onclick="window.open(\'http://www.payu.pl/\');"><img src="view/image/payment/payu.png" alt="PayU account" title="PayU account" style="border: 1px solid #EEEEEE;" /></a>';
+$_['text_openpayu']       = '<a onclick="window.open(\'https://www.payu.pl/\');"><img src="view/image/payment/payu.png" alt="PayU account" title="PayU account" style="border: 1px solid #EEEEEE;" /></a>';
 $_['text_success']      = 'Success: You have modified the PayU payment extension!';
 $_['text_payment']		= 'Payment';
 
