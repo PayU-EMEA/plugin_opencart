@@ -1,9 +1,9 @@
 <?php
-class ControllerPaymentOpenPayU extends Controller {
+class ControllerPaymentPayU extends Controller {
 	private $error = array();
 //Config page
 	public function index() {
-		$this->load->language('payment/openpayu');
+		$this->load->language('payment/payu');
 		$this->document->setTitle($this->language->get('heading_title'));
 		$this->load->model('setting/setting');
 
@@ -83,100 +83,100 @@ class ControllerPaymentOpenPayU extends Controller {
 
 //preloaded config
 	//
-		if (isset($this->request->post['openpayu_signaturekey'])) {
-			$this->data['openpayu_signaturekey'] = $this->request->post['openpayu_signaturekey'];
+		if (isset($this->request->post['payu_signaturekey'])) {
+			$this->data['payu_signaturekey'] = $this->request->post['payu_signaturekey'];
 		} else {
-			$this->data['openpayu_signaturekey'] = $this->config->get('openpayu_signaturekey');
+			$this->data['payu_signaturekey'] = $this->config->get('payu_signaturekey');
 		}
-		if (isset($this->request->post['openpayu_merchantposid'])) {
-			$this->data['openpayu_merchantposid'] = $this->request->post['openpayu_merchantposid'];
+		if (isset($this->request->post['payu_merchantposid'])) {
+			$this->data['payu_merchantposid'] = $this->request->post['payu_merchantposid'];
 		} else {
-			$this->data['openpayu_merchantposid'] = $this->config->get('openpayu_merchantposid');
+			$this->data['payu_merchantposid'] = $this->config->get('payu_merchantposid');
 		}
-		if (isset($this->request->post['openpayu_clientsecret'])) {
-			$this->data['openpayu_clientsecret'] = $this->request->post['openpayu_clientsecret'];
+		if (isset($this->request->post['payu_clientsecret'])) {
+			$this->data['payu_clientsecret'] = $this->request->post['payu_clientsecret'];
 		} else {
-			$this->data['openpayu_clientsecret'] = $this->config->get('openpayu_clientsecret');
+			$this->data['payu_clientsecret'] = $this->config->get('payu_clientsecret');
 		}
-		if (isset($this->request->post['openpayu_posauthkey'])) {
-			$this->data['openpayu_posauthkey'] = $this->request->post['openpayu_posauthkey'];
+		if (isset($this->request->post['payu_posauthkey'])) {
+			$this->data['payu_posauthkey'] = $this->request->post['payu_posauthkey'];
 		} else {
-			$this->data['openpayu_posauthkey'] = $this->config->get('openpayu_posauthkey');
+			$this->data['payu_posauthkey'] = $this->config->get('payu_posauthkey');
 		}
-		if (isset($this->request->post['openpayu_clientid'])) {
-			$this->data['openpayu_clientid'] = $this->request->post['openpayu_clientid'];
+		if (isset($this->request->post['payu_clientid'])) {
+			$this->data['payu_clientid'] = $this->request->post['payu_clientid'];
 		} else {
-			$this->data['openpayu_clientid'] = $this->config->get('openpayu_clientid');
+			$this->data['payu_clientid'] = $this->config->get('payu_clientid');
 		}
-		if (isset($this->request->post['openpayu_test'])) {
-			$this->data['openpayu_test'] = $this->request->post['openpayu_test'];
+		if (isset($this->request->post['payu_test'])) {
+			$this->data['payu_test'] = $this->request->post['payu_test'];
 		} else {
-			$this->data['openpayu_test'] = $this->config->get('openpayu_test');
+			$this->data['payu_test'] = $this->config->get('payu_test');
 		}
-		if (isset($this->request->post['openpayu_status'])) {
-			$this->data['openpayu_status'] = $this->request->post['openpayu_status'];
+		if (isset($this->request->post['payu_status'])) {
+			$this->data['payu_status'] = $this->request->post['payu_status'];
 		} else {
-			$this->data['openpayu_status'] = $this->config->get('openpayu_status');
+			$this->data['payu_status'] = $this->config->get('payu_status');
 		}
 	//Status
 	//cancelled, complete, failed, new, pending, reject, returned, sent
-		if (isset($this->request->post['openpayu_new_status'])) {
-			$this->data['openpayu_new_status'] = $this->request->post['openpayu_new_status'];
+		if (isset($this->request->post['payu_new_status'])) {
+			$this->data['payu_new_status'] = $this->request->post['payu_new_status'];
 		} else {
-			$this->data['openpayu_new_status'] = $this->config->get('openpayu_new_status');
+			$this->data['payu_new_status'] = $this->config->get('payu_new_status');
 		}
 		//2
-		if (isset($this->request->post['openpayu_reject_status'])) {
-			$this->data['openpayu_reject_status'] = $this->request->post['openpayu_reject_status'];
+		if (isset($this->request->post['payu_reject_status'])) {
+			$this->data['payu_reject_status'] = $this->request->post['payu_reject_status'];
 		} else {
-			$this->data['openpayu_reject_status'] = $this->config->get('openpayu_reject_status');
+			$this->data['payu_reject_status'] = $this->config->get('payu_reject_status');
 		}
 		//3
-		if (isset($this->request->post['openpayu_sent_status'])) {
-			$this->data['openpayu_sent_status'] = $this->request->post['openpayu_sent_status'];
+		if (isset($this->request->post['payu_sent_status'])) {
+			$this->data['payu_sent_status'] = $this->request->post['payu_sent_status'];
 		} else {
-			$this->data['openpayu_sent_status'] = $this->config->get('openpayu_sent_status');
+			$this->data['payu_sent_status'] = $this->config->get('payu_sent_status');
 		}
 		//4
-		if (isset($this->request->post['openpayu_failed_status'])) {
-			$this->data['openpayu_failed_status'] = $this->request->post['openpayu_failed_status'];
+		if (isset($this->request->post['payu_failed_status'])) {
+			$this->data['payu_failed_status'] = $this->request->post['payu_failed_status'];
 		} else {
-			$this->data['openpayu_failed_status'] = $this->config->get('openpayu_failed_status');
+			$this->data['payu_failed_status'] = $this->config->get('payu_failed_status');
 		}
 		//5
-		if (isset($this->request->post['openpayu_returned_status'])) {
-			$this->data['openpayu_returned_status'] = $this->request->post['openpayu_returned_status'];
+		if (isset($this->request->post['payu_returned_status'])) {
+			$this->data['payu_returned_status'] = $this->request->post['payu_returned_status'];
 		} else {
-			$this->data['openpayu_returned_status'] = $this->config->get('openpayu_returned_status');
+			$this->data['payu_returned_status'] = $this->config->get('payu_returned_status');
 		}
 		//6
-		if (isset($this->request->post['openpayu_cancelled_status'])) {
-			$this->data['openpayu_cancelled_status'] = $this->request->post['openpayu_cancelled_status'];
+		if (isset($this->request->post['payu_cancelled_status'])) {
+			$this->data['payu_cancelled_status'] = $this->request->post['payu_cancelled_status'];
 		} else {
-			$this->data['openpayu_cancelled_status'] = $this->config->get('openpayu_cancelled_status');
+			$this->data['payu_cancelled_status'] = $this->config->get('payu_cancelled_status');
 		}
 		//7
-		if (isset($this->request->post['openpayu_pending_status'])) {
-			$this->data['openpayu_pending_status'] = $this->request->post['openpayu_pending_status'];
+		if (isset($this->request->post['payu_pending_status'])) {
+			$this->data['payu_pending_status'] = $this->request->post['payu_pending_status'];
 		} else {
-			$this->data['openpayu_pending_status'] = $this->config->get('openpayu_pending_status');
+			$this->data['payu_pending_status'] = $this->config->get('payu_pending_status');
 		}
 		//8
-		if (isset($this->request->post['openpayu_complete_status'])) {
-			$this->data['openpayu_complete_status'] = $this->request->post['openpayu_complete_status'];
+		if (isset($this->request->post['payu_complete_status'])) {
+			$this->data['payu_complete_status'] = $this->request->post['payu_complete_status'];
 		} else {
-			$this->data['openpayu_complete_status'] = $this->config->get('openpayu_complete_status');
+			$this->data['payu_complete_status'] = $this->config->get('payu_complete_status');
 		}
 		
-		if (isset($this->request->post['openpayu_sort_order'])) {
-			$this->data['openpayu_sort_order'] = $this->request->post['openpayu_sort_order'];
+		if (isset($this->request->post['payu_sort_order'])) {
+			$this->data['payu_sort_order'] = $this->request->post['payu_sort_order'];
 		} else {
-			$this->data['openpayu_sort_order'] = $this->config->get('openpayu_sort_order');
+			$this->data['payu_sort_order'] = $this->config->get('payu_sort_order');
 		}
-		if (isset($this->request->post['openpayu_test'])) {
-			$this->data['openpayu_test'] = $this->request->post['openpayu_test'];
+		if (isset($this->request->post['payu_test'])) {
+			$this->data['payu_test'] = $this->request->post['payu_test'];
 		} else {
-			$this->data['openpayu_test'] = $this->config->get('openpayu_test');
+			$this->data['payu_test'] = $this->config->get('payu_test');
 		}
 		
 		$getjson = $this->getjson();
@@ -184,10 +184,10 @@ class ControllerPaymentOpenPayU extends Controller {
 		$buttonlist = $jsondata['media']['buttons'];
 		$this->data['button_list'] = $buttonlist;
 
-		if (isset($this->request->post['openpayu_button'])) {
-			$this->data['openpayu_button'] = $this->request->post['openpayu_button'];
+		if (isset($this->request->post['payu_button'])) {
+			$this->data['payu_button'] = $this->request->post['payu_button'];
 		} else {
-			$this->data['openpayu_button'] = $this->config->get('openpayu_button');
+			$this->data['payu_button'] = $this->config->get('payu_button');
 		}
 
 		$this->data['breadcrumbs'] = array();
@@ -203,19 +203,19 @@ class ControllerPaymentOpenPayU extends Controller {
 		);
 		$this->data['breadcrumbs'][] = array(
 			'text'      => $this->language->get('heading_title'),
-			'href'      => $this->url->link('payment/openpayu', 'token=' . $this->session->data['token'], 'SSL'),
+			'href'      => $this->url->link('payment/payu', 'token=' . $this->session->data['token'], 'SSL'),
 			'separator' => ' :: '
 		);
 
 //links
-		$this->data['action'] = $this->url->link('payment/openpayu', 'token=' . $this->session->data['token'], 'SSL');		
+		$this->data['action'] = $this->url->link('payment/payu', 'token=' . $this->session->data['token'], 'SSL');
 		$this->data['cancel'] = $this->url->link('extension/payment', 'token=' . $this->session->data['token'], 'SSL');
 
 		$this->load->model('localisation/order_status');
 		$this->data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
 //template
-		$this->template = 'payment/openpayu.tpl';
+		$this->template = 'payment/payu.tpl';
 		$this->children = array(
 			'common/header',	
 			'common/footer'	
@@ -228,26 +228,26 @@ class ControllerPaymentOpenPayU extends Controller {
 	//validate
 	private function validate() {
 		//permisions
-		if (!$this->user->hasPermission('modify', 'payment/openpayu')) {
+		if (!$this->user->hasPermission('modify', 'payment/payu')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 		//check for errors
-		if (!$this->request->post['openpayu_signaturekey']) {
+		if (!$this->request->post['payu_signaturekey']) {
 			$this->error['signaturekey'] = $this->language->get('error_signaturekey');
 		}
-		if (!$this->request->post['openpayu_merchantposid']) {
+		if (!$this->request->post['payu_merchantposid']) {
 			$this->error['merchantposid'] = $this->language->get('error_merchantposid');
 		}
-		if (!$this->request->post['openpayu_clientsecret']) {
+		if (!$this->request->post['payu_clientsecret']) {
 			$this->error['clientsecret'] = $this->language->get('error_clientsecret');
 		}
-		if (!$this->request->post['openpayu_clientid']) {
+		if (!$this->request->post['payu_clientid']) {
 			$this->error['clientid'] = $this->language->get('error_clientid');
 		}
-		if (!$this->request->post['openpayu_posauthkey']) {
+		if (!$this->request->post['payu_posauthkey']) {
 			$this->error['posauthkey'] = $this->language->get('error_posauthkey');
 		}
-		if (!$this->request->post['openpayu_sort_order']) {
+		if (!$this->request->post['payu_sort_order']) {
 			$this->error['sort_order'] = $this->language->get('error_sort_order');
 		}
 		//if errors correct them
@@ -260,11 +260,11 @@ class ControllerPaymentOpenPayU extends Controller {
 	}
 
 	public function install() {
-		//$this->load->model('payment/openpayu');
+		//$this->load->model('payment/payu');
 		//$this->model_payment_openpayu->createDatabaseTables();
 	}
 	public function uninstall() {
-		//$this->load->model('payment/openpayu');
+		//$this->load->model('payment/payu');
 		//$this->model_payment_openpayu->dropDatabaseTables();
 	}
 

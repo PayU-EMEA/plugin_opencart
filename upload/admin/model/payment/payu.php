@@ -1,8 +1,8 @@
 <?php
-class ModelPaymentOpenpayu extends Model {
+class ModelPaymentPayu extends Model {
 	
 	public function createDatabaseTables() {
-		$sql  = "CREATE TABLE IF NOT EXISTS `".DB_PREFIX."openpayu_so` ( ";
+		$sql  = "CREATE TABLE IF NOT EXISTS `".DB_PREFIX."payu_so` ( ";
 		$sql  = "`bind_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY";
 		$sql .= "`order_id` int(32) NOT NULL, ";
 		$sql .= "`session_id` int(32) NOT NULL, ";
@@ -11,7 +11,7 @@ class ModelPaymentOpenpayu extends Model {
 	}
 	
 	public function dropDatabaseTables() {
-		$sql = "DROP TABLE IF EXISTS `".DB_PREFIX."openpayu_so`;";
+		$sql = "DROP TABLE IF EXISTS `".DB_PREFIX."payu_so`;";
 		$this->db->query($sql);
 	}
 }

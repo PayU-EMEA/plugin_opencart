@@ -4,7 +4,7 @@ $_['heading_title']     = 'konto PayU';
 
 // Text
 $_['text_module']       = 'Moduły';
-$_['text_openpayu']       = '<a onclick="window.open(\'http://www.payu.pl/\');"><img src="view/image/payment/payu.png" alt="PayU account" title="PayU account" style="border: 1px solid #EEEEEE;" /></a>';
+$_['text_payu']       = '<a onclick="window.open(\'http://www.payu.pl/\');"><img src="view/image/payment/payu.png" alt="PayU account" title="PayU account" style="border: 1px solid #EEEEEE;" /></a>';
 $_['text_success']      = "Sukces: Udało się zmodyfikować moduł 'konto PayU'!";
 $_['text_payment']		= 'Płatność';
 

@@ -8,6 +8,6 @@
 	<input type="hidden" name="response_type" value="code">
 	<input type="hidden" name="client_id" value="<?php echo OpenPayU_Configuration::getClientId(); ?>">
   <div class="buttons">
-    <div class="right"><a onclick="$('#payment').submit();"><img src="<?php echo $openpayu_button; ?>"></a></div>
+    <div class="right"><a onclick="$('#payment').submit();"><img src="<?php echo $payu_button; ?>"></a></div>
   </div>
 </form>

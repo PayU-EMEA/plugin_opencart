@@ -15,10 +15,10 @@ function create_payu_button(){
     $('a[href$="route=checkout/checkout"]').each(function(){
     	if($("html").attr("lang")=="pl"){
 			if($(this).next().attr('rel') != 'payu_checkout')
-        $(' <a class="button" rel="payu_checkout" href="?route=payment/openpayu/expresscheckout" style="color:white;padding:6px;margin-left:5px;">Płacę z PayU</a>').insertAfter($(this));
+        $(' <a class="button" rel="payu_checkout" href="?route=payment/payu/expresscheckout" style="color:white;padding:6px;margin-left:5px;">Płacę z PayU</a>').insertAfter($(this));
     	}else{
 			if($(this).next().attr('rel') != 'payu_checkout')
-        $(' <a class="button" rel="payu_checkout" href="?route=payment/openpayu/expresscheckout" style="color:white;padding:6px;margin-left:5px;">Pay with PayU</a>').insertAfter($(this));
+        $(' <a class="button" rel="payu_checkout" href="?route=payment/payu/expresscheckout" style="color:white;padding:6px;margin-left:5px;">Pay with PayU</a>').insertAfter($(this));
     	}
   	});
 };

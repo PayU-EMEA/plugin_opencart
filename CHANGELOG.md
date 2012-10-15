@@ -1,3 +1,9 @@
+## 0.1.3
+
+* Changed of plugin name
+* Fixed sending information about order to customer
+* Added logger in Sandbox mode
+
 ## 0.1.2
 
 * SDK 0.1.9 compatible

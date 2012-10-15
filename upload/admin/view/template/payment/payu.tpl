@@ -25,7 +25,7 @@
 <!-- merchant POS ID -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_merchantposid; ?></td>
-    <td><input type="text" name="openpayu_merchantposid" value="<?php echo $openpayu_merchantposid; ?>" size="40" />
+    <td><input type="text" name="payu_merchantposid" value="<?php echo $payu_merchantposid; ?>" size="40" />
         <?php if ($error_merchantposid) { ?>
         <span class="error"><?php echo $error_merchantposid; ?></span>
         <?php } ?>
@@ -34,7 +34,7 @@
 <!-- POS Auth Key -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_posauthkey; ?></td>
-    <td><input type="text" name="openpayu_posauthkey" value="<?php echo $openpayu_posauthkey; ?>" size="40" />
+    <td><input type="text" name="payu_posauthkey" value="<?php echo $payu_posauthkey; ?>" size="40" />
         <?php if ($error_posauthkey) { ?>
         <span class="error"><?php echo $error_posauthkey; ?></span>
         <?php } ?>
@@ -43,7 +43,7 @@
 <!-- client ID -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_clientid; ?></td>
-    <td><input type="text" name="openpayu_clientid" value="<?php echo $openpayu_clientid; ?>" size="40" />
+    <td><input type="text" name="payu_clientid" value="<?php echo $payu_clientid; ?>" size="40" />
         <?php if ($error_clientid) { ?>
         <span class="error"><?php echo $error_clientid; ?></span>
         <?php } ?>
@@ -52,7 +52,7 @@
 <!-- signature key -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_clientsecret; ?></td>
-    <td><input type="text" name="openpayu_clientsecret" value="<?php echo $openpayu_clientsecret; ?>" size="40" />
+    <td><input type="text" name="payu_clientsecret" value="<?php echo $payu_clientsecret; ?>" size="40" />
         <?php if ($error_clientsecret) { ?>
         <span class="error"><?php echo $error_clientsecret; ?></span>
         <?php } ?>
@@ -61,7 +61,7 @@
 <!-- client secret -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_signaturekey; ?></td>
-    <td><input type="text" name="openpayu_signaturekey" value="<?php echo $openpayu_signaturekey; ?>" size="40" />
+    <td><input type="text" name="payu_signaturekey" value="<?php echo $payu_signaturekey; ?>" size="40" />
         <?php if ($error_signaturekey) { ?>
         <span class="error"><?php echo $error_signaturekey; ?></span>
         <?php } ?>
@@ -71,23 +71,23 @@
 <!-- Sandbox -->
 <tr>
     <td><?php echo $entry_test; ?></td>
-    <td><?php if ($openpayu_test) { ?>
-        <input type="radio" name="openpayu_test" value="1"  checked="checked"/>
+    <td><?php if ($payu_test) { ?>
+        <input type="radio" name="payu_test" value="1"  checked="checked"/>
         <?php echo $text_yes; ?>
-        <input type="radio" name="openpayu_test" value="0" />
+        <input type="radio" name="payu_test" value="0" />
         <?php echo $text_no; ?>
         <?php } else { ?>
-        <input type="radio" name="openpayu_test" value="1" />
+        <input type="radio" name="payu_test" value="1" />
         <?php echo $text_yes; ?>
-        <input type="radio" name="openpayu_test" value="0" checked="checked"/>
+        <input type="radio" name="payu_test" value="0" checked="checked"/>
         <?php echo $text_no; ?>
         <?php } ?>
     </td>
 </tr>
 <tr>
     <td><?php echo $entry_status; ?></td>
-    <td><select name="openpayu_status">
-        <?php if ($openpayu_status) { ?>
+    <td><select name="payu_status">
+        <?php if ($payu_status) { ?>
         <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
         <option value="0"><?php echo $text_disabled; ?></option>
         <?php } else { ?>
@@ -100,9 +100,9 @@
 
 <tr>
     <td><?php echo $entry_cancelled_status; ?></td>
-    <td><select name="openpayu_cancelled_status">
+    <td><select name="payu_cancelled_status">
         <?php foreach ($order_statuses as $order_status) { ?>
-        <?php if ($order_status['order_status_id'] == $openpayu_cancelled_status) { ?>
+        <?php if ($order_status['order_status_id'] == $payu_cancelled_status) { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
         <?php } else { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
@@ -112,9 +112,9 @@
 </tr>
 <tr>
     <td><?php echo $entry_complete_status; ?></td>
-    <td><select name="openpayu_complete_status">
+    <td><select name="payu_complete_status">
         <?php foreach ($order_statuses as $order_status) { ?>
-        <?php if ($order_status['order_status_id'] == $openpayu_complete_status) { ?>
+        <?php if ($order_status['order_status_id'] == $payu_complete_status) { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
         <?php } else { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
@@ -124,9 +124,9 @@
 </tr>
 <tr>
     <td><?php echo $entry_failed_status; ?></td>
-    <td><select name="openpayu_failed_status">
+    <td><select name="payu_failed_status">
         <?php foreach ($order_statuses as $order_status) { ?>
-        <?php if ($order_status['order_status_id'] == $openpayu_failed_status) { ?>
+        <?php if ($order_status['order_status_id'] == $payu_failed_status) { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
         <?php } else { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
@@ -136,9 +136,9 @@
 </tr>
 <tr>
     <td><?php echo $entry_new_status; ?></td>
-    <td><select name="openpayu_new_status">
+    <td><select name="payu_new_status">
         <?php foreach ($order_statuses as $order_status) { ?>
-        <?php if ($order_status['order_status_id'] == $openpayu_new_status) { ?>
+        <?php if ($order_status['order_status_id'] == $payu_new_status) { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
         <?php } else { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
@@ -149,9 +149,9 @@
 
 <tr>
     <td><?php echo $entry_pending_status; ?></td>
-    <td><select name="openpayu_pending_status">
+    <td><select name="payu_pending_status">
         <?php foreach ($order_statuses as $order_status) { ?>
-        <?php if ($order_status['order_status_id'] == $openpayu_pending_status) { ?>
+        <?php if ($order_status['order_status_id'] == $payu_pending_status) { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
         <?php } else { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
@@ -161,9 +161,9 @@
 </tr>
 <tr>
     <td><?php echo $entry_reject_status; ?></td>
-    <td><select name="openpayu_reject_status">
+    <td><select name="payu_reject_status">
         <?php foreach ($order_statuses as $order_status) { ?>
-        <?php if ($order_status['order_status_id'] == $openpayu_reject_status) { ?>
+        <?php if ($order_status['order_status_id'] == $payu_reject_status) { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
         <?php } else { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
@@ -173,9 +173,9 @@
 </tr>
 <tr>
     <td><?php echo $entry_returned_status; ?></td>
-    <td><select name="openpayu_returned_status">
+    <td><select name="payu_returned_status">
         <?php foreach ($order_statuses as $order_status) { ?>
-        <?php if ($order_status['order_status_id'] == $openpayu_returned_status) { ?>
+        <?php if ($order_status['order_status_id'] == $payu_returned_status) { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
         <?php } else { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
@@ -185,9 +185,9 @@
 </tr>
 <tr>
     <td><?php echo $entry_sent_status; ?></td>
-    <td><select name="openpayu_sent_status">
+    <td><select name="payu_sent_status">
         <?php foreach ($order_statuses as $order_status) { ?>
-        <?php if ($order_status['order_status_id'] == $openpayu_sent_status) { ?>
+        <?php if ($order_status['order_status_id'] == $payu_sent_status) { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
         <?php } else { ?>
         <option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
@@ -198,7 +198,7 @@
 <!-- sort order -->
 <tr>
     <td><?php echo $entry_sort_order; ?></td>
-    <td><input type="text" name="openpayu_sort_order" value="<?php echo $openpayu_sort_order; ?>" size="5" />
+    <td><input type="text" name="payu_sort_order" value="<?php echo $payu_sort_order; ?>" size="5" />
         <?php if ($error_sort_order) { ?>
         <span class="error"><?php echo $error_sort_order; ?></span>
         <?php } ?>
@@ -210,10 +210,10 @@
     <td><table class="form">
         <?php foreach ($button_list as $oneButton){ ?>
         <tr><td>
-            <?php if ($openpayu_button==$oneButton) { ?>
-            <input type="radio" name="openpayu_button" value="<?php echo $oneButton ?>"  checked="checked"/>
+            <?php if ($payu_button==$oneButton) { ?>
+            <input type="radio" name="payu_button" value="<?php echo $oneButton ?>"  checked="checked"/>
             <?php } else { ?>
-            <input type="radio" name="openpayu_button" value="<?php echo $oneButton ?>" />
+            <input type="radio" name="payu_button" value="<?php echo $oneButton ?>" />
             <?php }?>
         </td>
             <td>

@@ -3,10 +3,10 @@ class ControllerModuleExpressPayU extends Controller {
 	protected function index($setting) {
 		static $module = 0;
 
-		$this->document->addScript('catalog/view/javascript/openpayu.js');
+		$this->document->addScript('catalog/view/javascript/payu.js');
 	
-		$this->data['link'] = $this->url->link('payment/openpayu/expresscheckout');
-		$this->data['image'] = $this->config->get('openpayu_button');
+		$this->data['link'] = $this->url->link('payment/payu/expresscheckout');
+		$this->data['image'] = $this->config->get('payu_button');
 		$this->data['module'] = $module++;
 
 	//change the language of a button depending on client's language

@@ -10,11 +10,12 @@ PayU account is a web application designed as an e-wallet for shoppers willing t
 3. Go to the Extensions/Payments
 4. From the list select PayU account and click Install
 5. Click the Edit link
-6. Fill in all required configuration fields:
+6. Fill in all required configuration fields (Checkout POS data from Merchant Manager):
 * Merchant POS ID
 * POS Auth Key
 * Client ID (the same as Merchant POS ID)
 * Key (MD5)
 * Second key (MD5)
+* Sort order
 7. Select payment image button
 8. Save
