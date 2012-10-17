@@ -1,4 +1,13 @@
 <?php
+/**
+* ver. 0.1.4
+* PayU Payment Modules
+*
+* @copyright  Copyright 2012 by PayU
+* @license    http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
+* http://www.payu.com
+* http://twitter.com/openpayu
+*/
 // Heading
 $_['heading_title'] = 'PayU account';
 
@@ -13,4 +22,3 @@ $_['text_testmode'] = 'Warning: The PayU is in \'Sandbox Mode\'. Your account wi
 $_['text_payu_including_all_taxes'] = 'including all taxes';
 $_['text_payu_none'] = 'none';
 $_['text_payu_no_shipping'] = 'No Shipping Required';
-?>

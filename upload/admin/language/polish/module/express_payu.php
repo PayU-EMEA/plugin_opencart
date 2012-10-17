@@ -18,4 +18,3 @@ $_['entry_sort_order']    = 'Kolejność:';
 $_['entry_display']    	  = 'Wyświetlanie przycisku:';
 // Error
 $_['error_permission']    = "Uwaga: Brak uprawnień do modyfikacji modułu 'konto PayU'!";
-?>

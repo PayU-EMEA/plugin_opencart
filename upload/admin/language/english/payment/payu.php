@@ -33,5 +33,4 @@ $_['error_signaturekey']		= '* Signature Key Required!';
 $_['error_clientsecret']		= '* Client Secret Required!';
 $_['error_posauthkey']			= '* POS Auth Key Required!';
 $_['error_clientid']			= '* Client ID Required!';
-$_['error_sort_order']			= '* Sort Order Required!'
-?>
+$_['error_sort_order']			= '* Sort Order Required!';

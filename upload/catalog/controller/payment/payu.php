@@ -1,5 +1,13 @@
 <?php
-
+/**
+* ver. 0.1.4
+* PayU Payment Modules
+*
+* @copyright  Copyright 2012 by PayU
+* @license    http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
+* http://www.payu.com
+* http://twitter.com/openpayu
+*/
 class ControllerPaymentPayU extends Controller
 {
     //loading PayU SDK
@@ -73,7 +81,8 @@ class ControllerPaymentPayU extends Controller
             'GrandTotal' => $grandTotal,
             'CurrencyCode' => $this->session->data['currency'],
             'ShoppingCartItems' => $cartItems
-        ); //shoppingCart
+        );
+         //shoppingCart
         $this->session->data['sessionId'] = md5(rand() . rand() . rand() . rand()) . $this->session->data['order_id'];
 
         $order = array('MerchantPosId' => OpenPayU_Configuration::getMerchantPosId(),
@@ -358,7 +367,7 @@ class ControllerPaymentPayU extends Controller
 
         $order_info = $this->model_checkout_order->getOrder($order_id);
 
-        if (!$order_info['order_status_id']) {
+        if ($order_info['order_status_id'] == 0) {
             $this->model_checkout_order->confirm($order_id, $order_status_id, '', true);
         } elseif($order_info['order_status_id'] != $order_status_id) {
             $this->model_checkout_order->update($order_id, $order_status_id);
@@ -457,18 +466,24 @@ class ControllerPaymentPayU extends Controller
 
         if ($result->getSuccess()) {
 
+            /*
             $beforesummary = $this->url->link('payment/payu/beforesummary', '', 'SSL');
 
             $this->data['AuthUrl'] = OpenPayU_Configuration::getAuthUrl();
             $this->data['language'] = $this->session->data['language'];
             $this->data['beforesummary'] = $beforesummary;
             $this->data['ClientId'] = OpenPayU_Configuration::getClientId();
+
             if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/payu_redirect.tpl')) {
                 $this->template = $this->config->get('config_template') . '/template/payment/payu_redirect.tpl';
             } else {
                 $this->template = 'default/template/payment/payu_redirect.tpl';
             }
             $this->response->setOutput($this->render());
+            */
+
+            $result = OpenPayU_OAuth::accessTokenByClientCredentials();
+            header('Location: ' . OpenPayu_Configuration::getSummaryUrl() . '?sessionId=' . $_SESSION['sessionId'] . '&lang=' . $this->session->data['language'] . '&oauth_token=' . $result->getAccessToken());
 
         } else {
             header("Location: " . $this->url->link('checkout/cart'));
@@ -764,5 +779,3 @@ class ControllerPaymentPayU extends Controller
         return $order_id;
     }
 }
-
-?>

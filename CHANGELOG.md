@@ -1,3 +1,9 @@
+## 0.1.4
+
+* SDK 0.1.9.1 compatible
+* Added new shopping process flow
+* Fixed orders status change
+
 ## 0.1.3
 
 * Changed of plugin name

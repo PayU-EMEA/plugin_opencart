@@ -19,4 +19,3 @@ $_['entry_display']       = 'Display button:';
 
 // Error
 $_['error_permission']    = 'Warning: You do not have permission to modify module PayU - Express Checkout!';
-?>

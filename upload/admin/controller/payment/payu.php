@@ -282,6 +282,3 @@ class ControllerPaymentPayU extends Controller {
 		return $resp;
 	}
 }
-
-
-?>
