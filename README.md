@@ -1,8 +1,18 @@
 # PayU account plugin for OpenCart over 1.5.3
-
+-------
 PayU account is a web application designed as an e-wallet for shoppers willing to open an account, define their payment options, see their purchase history and manage personal profiles.
 
+## Dependencies
+
+The following PHP extensions are required:
+
+* cURL
+* hash
+* XMLWriter
+* XMLReader
+
 ## Installation
+
 1. Copy files to the root OpenCart folder
 2. Open OpenCart administration page
 3. Go to the Extensions/Modules
