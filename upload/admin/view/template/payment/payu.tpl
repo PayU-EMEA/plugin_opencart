@@ -22,6 +22,43 @@
 <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form">
 <!-- Wypełniamy formularz -->
 <table class="form">
+<tr>
+    <td><?php echo $entry_status; ?></td>
+    <td><select name="payu_status">
+        <?php if ($payu_status) { ?>
+        <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+        <option value="0"><?php echo $text_disabled; ?></option>
+        <?php } else { ?>
+        <option value="1"><?php echo $text_enabled; ?></option>
+        <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+        <?php } ?>
+    </select></td>
+</tr>
+<!-- sort order -->
+<tr>
+    <td><?php echo $entry_sort_order; ?></td>
+    <td><input type="text" name="payu_sort_order" value="<?php echo $payu_sort_order; ?>" size="5" />
+        <?php if ($error_sort_order) { ?>
+        <span class="error"><?php echo $error_sort_order; ?></span>
+        <?php } ?>
+    </td>
+</tr>
+<!-- Sandbox -->
+<tr>
+    <td><?php echo $entry_test; ?></td>
+    <td><?php if ($payu_test) { ?>
+        <input type="radio" name="payu_test" value="1"  checked="checked"/>
+        <?php echo $text_yes; ?>
+        <input type="radio" name="payu_test" value="0" />
+        <?php echo $text_no; ?>
+        <?php } else { ?>
+        <input type="radio" name="payu_test" value="1" />
+        <?php echo $text_yes; ?>
+        <input type="radio" name="payu_test" value="0" checked="checked"/>
+        <?php echo $text_no; ?>
+        <?php } ?>
+    </td>
+</tr>
 <!-- merchant POS ID -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_merchantposid; ?></td>
@@ -31,15 +68,7 @@
         <?php } ?>
     </td>
 </tr>
-<!-- POS Auth Key -->
-<tr>
-    <td><span class="required">*</span> <?php echo $entry_posauthkey; ?></td>
-    <td><input type="text" name="payu_posauthkey" value="<?php echo $payu_posauthkey; ?>" size="40" />
-        <?php if ($error_posauthkey) { ?>
-        <span class="error"><?php echo $error_posauthkey; ?></span>
-        <?php } ?>
-    </td>
-</tr>
+
 <!-- client ID -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_clientid; ?></td>
@@ -67,34 +96,14 @@
         <?php } ?>
     </td>
 </tr>
-
-<!-- Sandbox -->
+<!-- POS Auth Key -->
 <tr>
-    <td><?php echo $entry_test; ?></td>
-    <td><?php if ($payu_test) { ?>
-        <input type="radio" name="payu_test" value="1"  checked="checked"/>
-        <?php echo $text_yes; ?>
-        <input type="radio" name="payu_test" value="0" />
-        <?php echo $text_no; ?>
-        <?php } else { ?>
-        <input type="radio" name="payu_test" value="1" />
-        <?php echo $text_yes; ?>
-        <input type="radio" name="payu_test" value="0" checked="checked"/>
-        <?php echo $text_no; ?>
+    <td><span class="required">*</span> <?php echo $entry_posauthkey; ?></td>
+    <td><input type="text" name="payu_posauthkey" value="<?php echo $payu_posauthkey; ?>" size="40" />
+        <?php if ($error_posauthkey) { ?>
+        <span class="error"><?php echo $error_posauthkey; ?></span>
         <?php } ?>
     </td>
-</tr>
-<tr>
-    <td><?php echo $entry_status; ?></td>
-    <td><select name="payu_status">
-        <?php if ($payu_status) { ?>
-        <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-        <option value="0"><?php echo $text_disabled; ?></option>
-        <?php } else { ?>
-        <option value="1"><?php echo $text_enabled; ?></option>
-        <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-        <?php } ?>
-    </select></td>
 </tr>
 <!--Bloki wiązań statusów -->
 
@@ -195,15 +204,7 @@
         <?php } ?>
     </select></td>
 </tr>
-<!-- sort order -->
-<tr>
-    <td><?php echo $entry_sort_order; ?></td>
-    <td><input type="text" name="payu_sort_order" value="<?php echo $payu_sort_order; ?>" size="5" />
-        <?php if ($error_sort_order) { ?>
-        <span class="error"><?php echo $error_sort_order; ?></span>
-        <?php } ?>
-    </td>
-</tr>
+
 <!-- To jedziem z koksem (tzn. batonami)-->
 <tr>
     <td><?php echo $entry_button; ?></td>

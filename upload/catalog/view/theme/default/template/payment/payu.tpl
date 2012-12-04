@@ -3,10 +3,10 @@
 <?php } ?>
 
 
-<form action="<?php echo OpenPayU_Configuration::getAuthUrl(); ?>" method="get" id="payment">
-	<input type="hidden" name="redirect_uri" value="<?php echo $beforesummary;?>">
-	<input type="hidden" name="response_type" value="code">
-	<input type="hidden" name="client_id" value="<?php echo OpenPayU_Configuration::getClientId(); ?>">
+<form action="<?php echo $actionUrl ?>" method="get" id="payment">
+	<input type="hidden" name="sessionId" value="<?php echo $sessionId;?>">
+	<input type="hidden" name="oauth_token" value="<?php echo $accessToken;?>">
+	<input type="hidden" name="lang" value="<?php echo $lang ?>">
   <div class="buttons">
     <div class="right"><a onclick="$('#payment').submit();"><img src="<?php echo $payu_button; ?>"></a></div>
   </div>

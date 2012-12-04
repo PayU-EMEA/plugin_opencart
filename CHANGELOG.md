@@ -1,3 +1,9 @@
+## 0.1.5
+
+* Added customer and shipping information in order create
+* Changed description labels in configuration
+* Redirect to cart after cancel transaction
+
 ## 0.1.4
 
 * SDK 0.1.9.1 compatible
