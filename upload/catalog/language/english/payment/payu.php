@@ -1,6 +1,6 @@
 <?php
 /*
-* ver. 0.1.5
+* ver. 0.1.6
 * PayU Payment Modules
 *
 * @copyright  Copyright 2012 by PayU
@@ -22,3 +22,4 @@ $_['text_testmode'] = 'Warning: The PayU is in \'Sandbox Mode\'. Your account wi
 $_['text_payu_including_all_taxes'] = 'including all taxes';
 $_['text_payu_none'] = 'none';
 $_['text_payu_no_shipping'] = 'No Shipping Required';
+$_['text_error_message'] = 'Something went wrong. You can not order by PayU.';

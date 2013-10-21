@@ -1,6 +1,6 @@
 <?php
 /*
-* ver. 0.1.5
+* ver. 0.1.6
 * PayU Payment Modules
 *
 * @copyright  Copyright 2012 by PayU
@@ -22,3 +22,4 @@ $_['text_testmode'] = 'Ostrzeżenie: \'konto PayU\' pracuje w trybie \'Sandbox\'
 $_['text_payu_including_all_taxes'] = 'brutto';
 $_['text_payu_none'] = 'brak';
 $_['text_payu_no_shipping'] = 'Wysyłka niewymagana';
+$_['text_error_message'] = 'Nie udało się utworzyć zamówienia w Systemie PayU. Proszę spróbować ponownie lub skontaktować się z obsługą sklepu.';

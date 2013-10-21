@@ -1,3 +1,8 @@
+## 0.1.6
+
+* Fix for bug from the issue #8
+* Updated SDK library
+
 ## 0.1.5
 
 * Added customer and shipping information in order create

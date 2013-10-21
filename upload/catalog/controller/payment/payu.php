@@ -1,6 +1,6 @@
 <?php
 /*
-* ver. 0.1.5
+* ver. 0.1.6
 * PayU Payment Modules
 *
 * @copyright  Copyright 2012 by PayU
@@ -40,6 +40,7 @@ class ControllerPaymentPayU extends Controller
         $this->data['button_confirm'] = $this->language->get('button_confirm');
         $this->data['testmode'] = $this->config->get('payu_test');
         $this->data['payu_button'] = $this->config->get('payu_button');
+        $this->data['error'] = false;
 
         $order = $this->buildorder();
 
@@ -60,7 +61,8 @@ class ControllerPaymentPayU extends Controller
         }
         else
         {
-            $this->data['text_testmode'] = 'Something went wrong. You can not order by PayU.';
+            $this->data['error'] = true;
+            $this->data['text_error'] = $this->language->get('text_error_message');
             if ($this->config->get('payu_test')) {
                 $this->logger->write($result->getError() . ' [request: ' . serialize($result->getRequest()) . ', response: ' . serialize($result->getResponse()) . ']');
             }
