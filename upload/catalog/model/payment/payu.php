@@ -1,6 +1,6 @@
 <?php
 /*
-* ver. 0.1.6
+* ver. 0.1.7
 * PayU Payment Modules
 *
 * @copyright  Copyright 2012 by PayU
@@ -56,6 +56,64 @@ class ModelPaymentPayu extends Model
             $data['shipping_zone_code'] = 'zone was not provided by PAYU';
             $data['shipping_zone'] = 'zone was not provided by PAYU';
         }
-        $this->db->query("UPDATE `" . DB_PREFIX . "order` SET firstname = '" . $this->db->escape($data['firstname']) . "', lastname = '" . $this->db->escape($data['lastname']) . "', email = '" . $this->db->escape($data['email']) . "', telephone = '" . $this->db->escape($data['telephone']) . "', fax = '" . $this->db->escape($data['fax']) . "', shipping_firstname = '" . $this->db->escape($data['shipping_firstname']) . "', shipping_lastname = '" . $this->db->escape($data['shipping_lastname']) . "',  shipping_company = '" . $this->db->escape($data['shipping_company']) . "', shipping_address_1 = '" . $this->db->escape($data['shipping_address_1']) . "', shipping_address_2 = '" . $this->db->escape($data['shipping_address_2']) . "', shipping_city = '" . $this->db->escape($data['shipping_city']) . "', shipping_postcode = '" . $this->db->escape($data['shipping_postcode']) . "', shipping_country = '" . $this->db->escape($data['shipping_country']) . "', shipping_country_id = '" . (int)$data['shipping_country_id'] . "', shipping_code = '" . (int)$data['shipping_code'] . "', shipping_zone = '" . $this->db->escape($data['shipping_zone']) . "', shipping_zone_id = '" . (int)$data['shipping_zone_id'] . "', shipping_address_format = '" . $this->db->escape($data['shipping_address_format']) . "', shipping_method = '" . $this->db->escape($data['shipping_method']) . "', payment_firstname = '" . $this->db->escape($data['payment_firstname']) . "', payment_lastname = '" . $this->db->escape($data['payment_lastname']) . "', payment_company = '" . $this->db->escape($data['payment_company']) . "', payment_address_1 = '" . $this->db->escape($data['payment_address_1']) . "', payment_address_2 = '" . $this->db->escape($data['payment_address_2']) . "', payment_city = '" . $this->db->escape($data['payment_city']) . "', payment_postcode = '" . $this->db->escape($data['payment_postcode']) . "', payment_country = '" . $this->db->escape($data['payment_country']) . "', payment_country_id = '" . (int)$data['payment_country_id'] . "', payment_zone = '" . $this->db->escape($data['payment_zone']) . "', payment_zone_id = '" . (int)$data['payment_zone_id'] . "', payment_address_format = '" . $this->db->escape($data['payment_address_format']) . "', payment_method = '" . $this->db->escape($data['payment_method']) . "', comment = '" . $this->db->escape($data['comment']) . "', order_status_id = '" . (int)$data['order_status_id'] . "', affiliate_id  = '" . (int)$data['affiliate_id'] . "', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
+
+        $query = "UPDATE `" . DB_PREFIX . "order` SET
+                firstname = '" . $this->db->escape($data['firstname']) . "',
+                lastname = '" . $this->db->escape($data['lastname']) . "',
+                email = '" . $this->db->escape($data['email']) . "',
+                telephone = '" . $this->db->escape($data['telephone']) . "',
+                fax = '" . $this->db->escape($data['fax']) . "',
+                shipping_firstname = '" . $this->db->escape($data['shipping_firstname']) . "',
+                shipping_lastname = '" . $this->db->escape($data['shipping_lastname']) . "',
+                shipping_company = '" . $this->db->escape($data['shipping_company']) . "',
+                shipping_address_1 = '" . $this->db->escape($data['shipping_address_1']) . "',
+                shipping_address_2 = '" . $this->db->escape($data['shipping_address_2']) . "',
+                shipping_city = '" . $this->db->escape($data['shipping_city']) . "',
+                shipping_postcode = '" . $this->db->escape($data['shipping_postcode']) . "',
+                shipping_country = '" . $this->db->escape($data['shipping_country']) . "',
+                shipping_country_id = '" . (int)$data['shipping_country_id'] . "',
+                shipping_code = '" . (int)$data['shipping_code'] . "',
+                shipping_zone = '" . $this->db->escape($data['shipping_zone']) . "',
+                shipping_zone_id = '" . (int)$data['shipping_zone_id'] . "',
+                shipping_address_format = '" . $this->db->escape($data['shipping_address_format']) . "',
+                shipping_method = '" . $this->db->escape($data['shipping_method']) . "',
+                payment_firstname = '" . $this->db->escape($data['payment_firstname']) . "',
+                payment_lastname = '" . $this->db->escape($data['payment_lastname']) . "',
+                payment_company = '" . $this->db->escape($data['payment_company']) . "',
+                payment_address_1 = '" . $this->db->escape($data['payment_address_1']) . "',
+                payment_address_2 = '" . $this->db->escape($data['payment_address_2']) . "',
+                payment_city = '" . $this->db->escape($data['payment_city']) . "',
+                payment_postcode = '" . $this->db->escape($data['payment_postcode']) . "',
+                payment_country = '" . $this->db->escape($data['payment_country']) . "',
+                payment_country_id = '" . (int)$data['payment_country_id'] . "',
+                payment_zone = '" . $this->db->escape($data['payment_zone']) . "',
+                payment_zone_id = '" . (int)$data['payment_zone_id'] . "',
+                payment_address_format = '" . $this->db->escape($data['payment_address_format']) . "',
+                payment_method = '" . $this->db->escape($data['payment_method']) . "',
+                comment = '" . $this->db->escape($data['comment']) . "',
+                order_status_id = '" . (int)$data['order_status_id'] . "',
+                date_modified = NOW()
+            WHERE order_id = '" . (int)$order_id . "'";
+
+        $this->db->query($query);
+    }
+
+    public function addOrder($orderId, $sessionId)
+    {
+        $query = 'INSERT INTO ' . DB_PREFIX . 'payu_so VALUES (NULL, "'.(int)$orderId.'", "'.$this->db->escape($sessionId).'")';
+        return $this->db->query($query);
+    }
+
+    public function getOrderIdBySessionId($sessionId)
+    {
+        $query = 'SELECT order_id FROM ' . DB_PREFIX . 'payu_so WHERE session_id ="'.$this->db->escape($sessionId).'"';
+        $result = $this->db->query($query)->row;
+
+        if(!$result)
+        {
+            return null;
+        }
+
+        return (int)$result['order_id'];
     }
 }

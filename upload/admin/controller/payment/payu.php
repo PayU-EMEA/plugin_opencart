@@ -1,6 +1,6 @@
 <?php
 /*
-* ver. 0.1.6
+* ver. 0.1.7
 * PayU Payment Modules
 *
 * @copyright  Copyright 2012 by PayU
@@ -269,12 +269,12 @@ class ControllerPaymentPayU extends Controller {
 	}
 
 	public function install() {
-		//$this->load->model('payment/payu');
-		//$this->model_payment_openpayu->createDatabaseTables();
+		$this->load->model('payment/payu');
+		$this->model_payment_payu->createDatabaseTables();
 	}
 	public function uninstall() {
-		//$this->load->model('payment/payu');
-		//$this->model_payment_openpayu->dropDatabaseTables();
+		$this->load->model('payment/payu');
+		$this->model_payment_payu->dropDatabaseTables();
 	}
 
 

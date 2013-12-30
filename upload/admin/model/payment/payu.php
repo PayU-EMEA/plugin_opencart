@@ -1,6 +1,6 @@
 <?php
 /*
-* ver. 0.1.6
+* ver. 0.1.7
 * PayU Payment Modules
 *
 * @copyright  Copyright 2012 by PayU
@@ -13,11 +13,11 @@ class ModelPaymentPayu extends Model
 
     public function createDatabaseTables()
     {
-        $sql = "CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "payu_so` ( ";
-        $sql = "`bind_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY";
-        $sql .= "`order_id` int(32) NOT NULL, ";
-        $sql .= "`session_id` int(32) NOT NULL, ";
-        $sql .= ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+        $sql = "CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "payu_so` (
+            `bind_id` int(11) NULL AUTO_INCREMENT PRIMARY KEY,
+            `order_id` int(32) NOT NULL,
+            `session_id` varchar(32) NOT NULL
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
         $this->db->query($sql);
     }
 
@@ -27,4 +27,3 @@ class ModelPaymentPayu extends Model
         $this->db->query($sql);
     }
 }
-
