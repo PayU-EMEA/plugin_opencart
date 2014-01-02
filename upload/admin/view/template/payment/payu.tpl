@@ -1,26 +1,21 @@
 <?php echo $header; ?>
 <div id="content">
-<!-- Szybka nawigacja -->
 <div class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
     <?php echo $breadcrumb['separator']; ?><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
     <?php } ?>
 </div>
-<!-- Komunikaty błędów -->
 <?php if ($error_warning) { ?>
 <div class="warning"><?php echo $error_warning; ?></div>
 <?php } ?>
 <div class="box">
-<!-- Nagłówek z przyciskami -->
 <div class="heading">
     <h1><img src="view/image/payment.png" alt="" /> <?php echo $heading_title; ?></h1>
     <div class="buttons"><a onclick="$('#form').submit();" class="button"><span><?php echo $button_save; ?></span></a><a onclick="location = '<?php echo $cancel; ?>';" class="button"><span><?php echo $button_cancel; ?></span></a>
     </div>
 </div>
 <div class="content">
-<!-- konfigurację musimy podać jako dane POST -->
 <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form">
-<!-- Wypełniamy formularz -->
 <table class="form">
 <tr>
     <td><?php echo $entry_status; ?></td>
@@ -105,7 +100,7 @@
         <?php } ?>
     </td>
 </tr>
-<!--Bloki wiązań statusów -->
+<!--Statuses config -->
 
 <tr>
     <td><?php echo $entry_cancelled_status; ?></td>
@@ -205,7 +200,6 @@
     </select></td>
 </tr>
 
-<!-- To jedziem z koksem (tzn. batonami)-->
 <tr>
     <td><?php echo $entry_button; ?></td>
     <td><table class="form">

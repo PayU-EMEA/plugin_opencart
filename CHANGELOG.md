@@ -1,3 +1,13 @@
+## 0.1.8
+
+* Fixed order status notifications
+
+## 0.1.7
+
+* Fixed install/unistall
+* Fixed database table create script
+* Added SessionId saving
+
 ## 0.1.6
 
 * Fix for bug from the issue #8

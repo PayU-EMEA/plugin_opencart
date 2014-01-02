@@ -31,11 +31,11 @@
             <td class="left">
             	<input type='hidden' name="express_payu_module[<?php echo $module_row; ?>][layout_id]" value="<?php echo $module['layout_id']?>">
                 <?php foreach ($layouts as $layout) { ?>
-		            <?php if ($layout['layout_id'] == $module['layout_id']) { ?>
-		         		<?php echo $layout['name']; ?>
-		            <?php } ?>
+                    <?php if ($layout['layout_id'] == $module['layout_id']) { ?>
+                      <?php echo $layout['name']; ?>
+                  <?php } ?>
                 <?php } ?>
-				</td>
+            </td>
             <td class="left"><select name="express_payu_module[<?php echo $module_row; ?>][position]">
                 <?php if ($module['position'] == 'content_top') { ?>
                 <option value="content_top" selected="selected"><?php echo $text_content_top; ?></option>
@@ -58,16 +58,18 @@
                 <option value="column_right"><?php echo $text_column_right; ?></option>
                 <?php } ?>
               </select></td>
-              <td><select name="express_payu_module[<?php echo $module_row; ?>][display]">
-					<?php if ($module['display']) { ?>
-						<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-						<option value="0"><?php echo $text_disabled; ?></option>
-					<?php } else { ?>
-						<option value="1"><?php echo $text_enabled; ?></option>
-						<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-					<?php } ?>
-					</select></td>
-					<input type='hidden' name="express_payu_module[<?php echo $module_row; ?>][status]" value="1">
+              <td>
+                <select name="express_payu_module[<?php echo $module_row; ?>][display]">
+                    <?php if ($module['display']) { ?>
+                        <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+                        <option value="0"><?php echo $text_disabled; ?></option>
+                    <?php } else { ?>
+                        <option value="1"><?php echo $text_enabled; ?></option>
+                        <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+                    <?php } ?>
+                </select>
+                <input type='hidden' name="express_payu_module[<?php echo $module_row; ?>][status]" value="1">
+              </td>
             <td class="right"><input type="text" name="express_payu_module[<?php echo $module_row; ?>][sort_order]" value="<?php echo $module['sort_order']; ?>" size="3" /></td>
             <!--<td class="left"><a onclick="$('#module-row<?php echo $module_row; ?>').remove();" class="button"><?php echo $button_remove; ?></a></td>-->
           </tr>
