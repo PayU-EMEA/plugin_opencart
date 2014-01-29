@@ -201,7 +201,7 @@ class ControllerPaymentPayU extends Controller
         $this->load->model('payment/payu');
 
         if (!empty($this->request->get['error'])) {
-            header("Location: " . $this->url->link('checkout/cart'));
+            $this->redirect($this->url->link('checkout/cart'));
         }
 
         $this->loadLibConfig();
@@ -230,13 +230,13 @@ class ControllerPaymentPayU extends Controller
             }
         }
 
-        header("Location: " . $this->url->link('checkout/success'));
+        $this->redirect($this->url->link('checkout/success'));
     }
 
     //Cancel Page
     public function paymentcancel()
     {
-        header("Location: " . $this->url->link('checkout/cart'));
+        $this->redirect($this->url->link('checkout/cart'));
     }
 
     //Notification
@@ -454,13 +454,14 @@ class ControllerPaymentPayU extends Controller
         $cart = $this->cart->getProducts();
 
         if (empty($cart)) {
-            header("Location: " . $this->url->link('checkout/cart'));
+            $this->redirect($this->url->link('checkout/cart'));
         }
 
         $this->session->data['order_id'] = $this->collectData();
         $order = $this->buildorder();
 
         $result = OpenPayU_Order::create($order);
+        ob_end_flush();
 
         if ($result->getSuccess()) {
             $this->model_payment_payu->addOrder($this->session->data['order_id'], $this->session->data['sessionId']);
@@ -474,17 +475,14 @@ class ControllerPaymentPayU extends Controller
                     'lang' => strtolower($this->session->data['language'])
                 );
 
-                header("Location: " . OpenPayU_Configuration::getSummaryUrl() . '?' . http_build_query($values, '&'));
+                $this->redirect(OpenPayU_Configuration::getSummaryUrl() . '?' . http_build_query($values, '&'));
             } else {
                 $this->logger->write($result->getError() . ' [' . serialize($result->getResponse()) . ']');
             }
         } else {
             $this->logger->write($result->getError() . ' [' . serialize($result->getResponse()) . ']');
+            $this->redirect($this->url->link('checkout/cart'));
         }
-        ob_end_flush();
-
-        header("Location: " . $this->url->link('checkout/cart'));
-
     }
 
     //building order for express checkout
@@ -504,8 +502,12 @@ class ControllerPaymentPayU extends Controller
         $cartItems = array();
         $orderType = 'VIRTUAL';
 
-
+        $decimalPlace = $this->currency->getDecimalPlace();
         foreach ($this->cart->getProducts() as $item) {
+            if(empty($decimalPlace)) {
+                $item['price'] *= 100;
+            }
+
             $gross = $this->tax->calculate($item['price'], $item['tax_class_id']);
             if ($item['shipping'] == 1) {
                 $orderType = 'MATERIAL';
@@ -620,7 +622,14 @@ class ControllerPaymentPayU extends Controller
             }
 
             if (!empty($order_info['shipping_method'])) {
-                $shippingCost = array(
+
+                $shippingCost = $this->session->data['shipping_method']['cost'];
+                if(empty($decimalPlace))
+                {
+                    $shippingCost *= 100;
+                }
+
+                $shippingCostArray = array(
                     'CountryCode' => $order_info['payment_iso_code_2'],
                     'ShipToOtherCountry' => 'true',
                     'City' => $order_info['shipping_city'],
@@ -635,7 +644,7 @@ class ControllerPaymentPayU extends Controller
                                     '',
                                     $this->currency->format(
                                         $this->tax->calculate(
-                                            $this->session->data['shipping_method']['cost'],
+                                            $shippingCost,
                                             $this->session->data['shipping_method']['tax_class_id']
                                         ),
                                         $this->session->data['currency'],
@@ -647,7 +656,7 @@ class ControllerPaymentPayU extends Controller
                                     '.',
                                     '',
                                     $this->currency->format(
-                                        $this->session->data['shipping_method']['cost'],
+                                        $shippingCost,
                                         $this->session->data['currency'],
                                         false,
                                         false
@@ -658,9 +667,9 @@ class ControllerPaymentPayU extends Controller
                                     '',
                                     $this->currency->format(
                                         $this->tax->calculate(
-                                            $this->session->data['shipping_method']['cost'],
+                                            $shippingCost,
                                             $this->session->data['shipping_method']['tax_class_id']
-                                        ) - $this->session->data['shipping_method']['cost'],
+                                        ) - $shippingCost,
                                         $this->session->data['currency'],
                                         false,
                                         false
@@ -683,6 +692,11 @@ class ControllerPaymentPayU extends Controller
                 $country = $this->model_localisation_country->getCountry($order_info['shipping_country_id']);
 
                 foreach ($shipping_methods as $onemethod) {
+                    if(empty($decimalPlace))
+                    {
+                        $onemethod['cost'] *= 100;
+                    }
+
                     $shipmethod = array(
                         'Type' => $onemethod['title'],
                         'CountryCode' => $country['iso_code_2'],
@@ -724,7 +738,7 @@ class ControllerPaymentPayU extends Controller
                     }
                     $shippingCostList[]['ShippingCost'] = $shipmethod;
                 }
-                $shippingCost = array(
+                $shippingCostArray = array(
                     'CountryCode' => $country['iso_code_2'],
                     'ShipToOtherCountry' => 'true',
                     'ShippingCostList' => $shippingCostList
@@ -732,7 +746,7 @@ class ControllerPaymentPayU extends Controller
             }
 
             $OCReq['ShippingCost'] = array(
-                'AvailableShippingCost' => $shippingCost,
+                'AvailableShippingCost' => $shippingCostArray,
                 'ShippingCostsUpdateUrl' => $this->url->link('payment/payu/shipping')
             );
         }
@@ -805,6 +819,8 @@ class ControllerPaymentPayU extends Controller
         $taxes = $this->cart->getTaxes();
 
         $this->load->model('setting/extension');
+        $this->load->model('account/address');
+
         $results = $this->model_setting_extension->getExtensions('total');
         foreach ($results as $result) {
             if ($this->config->get($result['code'] . '_status')) {
@@ -812,7 +828,78 @@ class ControllerPaymentPayU extends Controller
                 $this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
             }
         }
-        $allData['products'] = $this->cart->getProducts();
+
+        $product_data = array();
+
+        foreach ($this->cart->getProducts() as $product) {
+            $option_data = array();
+
+            foreach ($product['option'] as $option) {
+                if ($option['type'] != 'file') {
+                    $value = $option['option_value'];
+                } else {
+                    $value = $this->encryption->decrypt($option['option_value']);
+                }
+
+                $option_data[] = array(
+                    'product_option_id'       => $option['product_option_id'],
+                    'product_option_value_id' => $option['product_option_value_id'],
+                    'option_id'               => $option['option_id'],
+                    'option_value_id'         => $option['option_value_id'],
+                    'name'                    => $option['name'],
+                    'value'                   => $value,
+                    'type'                    => $option['type']
+                );
+            }
+
+            $product_data[] = array(
+                'product_id' => $product['product_id'],
+                'name'       => $product['name'],
+                'model'      => $product['model'],
+                'option'     => $option_data,
+                'download'   => $product['download'],
+                'quantity'   => $product['quantity'],
+                'subtract'   => $product['subtract'],
+                'price'      => $product['price'],
+                'total'      => $product['total'],
+                'tax'        => $this->tax->getTax($product['price'], $product['tax_class_id']),
+                'reward'     => $product['reward']
+            );
+        }
+
+        // Gift Voucher
+        $voucher_data = array();
+
+        if (!empty($this->session->data['vouchers'])) {
+            foreach ($this->session->data['vouchers'] as $voucher) {
+                $voucher_data[] = array(
+                    'description'      => $voucher['description'],
+                    'code'             => substr(md5(mt_rand()), 0, 10),
+                    'to_name'          => $voucher['to_name'],
+                    'to_email'         => $voucher['to_email'],
+                    'from_name'        => $voucher['from_name'],
+                    'from_email'       => $voucher['from_email'],
+                    'voucher_theme_id' => $voucher['voucher_theme_id'],
+                    'message'          => $voucher['message'],
+                    'amount'           => $voucher['amount']
+                );
+            }
+        }
+
+        $voucher_data = array();
+
+        if (!empty($this->session->data['vouchers'])) {
+            foreach ($this->session->data['vouchers'] as $voucher) {
+                $voucher_data[] = array(
+                    'description' => $voucher['description'],
+                    'amount'      => $this->currency->format($voucher['amount'])
+                );
+            }
+        }
+
+        $allData['products'] = $product_data;
+        $data['vouchers'] = $voucher_data;
+
         $allData['totals'] = $total_data;
 
         $allData['invoice_prefix'] = $this->config->get('config_invoice_prefix');
@@ -825,39 +912,122 @@ class ControllerPaymentPayU extends Controller
             $allData['store_url'] = HTTP_SERVER;
         }
 
-        $this->load->model('account/customer');
-        if (isset($this->session->data['customer_id'])) {
-            $customer_data = $this->model_account_customer->getCustomer($this->session->data['customer_id']);
-        }
-
         if (isset($this->session->data['customer_id'])) {
             $allData['customer_id'] = $this->session->data['customer_id'];
         }
 
-        if (!empty($customer_data)) {
-            $allData['customer_group_id'] = $customer_data['customer_group_id'];
-            $allData['firstname'] = $customer_data['firstname'];
-            $allData['lastname'] = $customer_data['lastname'];
-            $allData['email'] = $customer_data['email'];
-            $allData['telephone'] = $customer_data['telephone'];
-            $allData['fax'] = $customer_data['fax'];
+        if ($this->customer->isLogged()) {
+            $allData['customer_id'] = $this->customer->getId();
+            $allData['customer_group_id'] = $this->customer->getCustomerGroupId();
+            $allData['firstname'] = $this->customer->getFirstName();
+            $allData['lastname'] = $this->customer->getLastName();
+            $allData['email'] = $this->customer->getEmail();
+            $allData['telephone'] = $this->customer->getTelephone();
+            $allData['fax'] = $this->customer->getFax();
+
+            $this->load->model('account/address');
+
+            $payment_address = $this->model_account_address->getAddress($this->session->data['payment_address_id']);
+        } elseif (isset($this->session->data['guest'])) {
+            $allData['customer_id'] = 0;
+            $allData['customer_group_id'] = $this->session->data['guest']['customer_group_id'];
+            $allData['firstname'] = $this->session->data['guest']['firstname'];
+            $allData['lastname'] = $this->session->data['guest']['lastname'];
+            $allData['email'] = $this->session->data['guest']['email'];
+            $allData['telephone'] = $this->session->data['guest']['telephone'];
+            $allData['fax'] = $this->session->data['guest']['fax'];
+
+            $payment_address = $this->session->data['guest']['payment'];
         }
 
-        $this->load->model('localisation/country');
-        $country_data = $this->model_localisation_country->getCountry($this->config->get('config_country_id'));
+        $allData['payment_firstname'] = $payment_address['firstname'];
+        $allData['payment_lastname'] = $payment_address['lastname'];
+        $allData['payment_company'] = $payment_address['company'];
+        $allData['payment_company_id'] = $payment_address['company_id'];
+        $allData['payment_tax_id'] = $payment_address['tax_id'];
+        $allData['payment_address_1'] = $payment_address['address_1'];
+        $allData['payment_address_2'] = $payment_address['address_2'];
+        $allData['payment_city'] = $payment_address['city'];
+        $allData['payment_postcode'] = $payment_address['postcode'];
+        $allData['payment_zone'] = $payment_address['zone'];
+        $allData['payment_zone_id'] = $payment_address['zone_id'];
+        $allData['payment_country'] = $payment_address['country'];
+        $allData['payment_country_id'] = $payment_address['country_id'];
+        $allData['payment_address_format'] = $payment_address['address_format'];
 
-        $allData['shipping_country'] = $country_data['name'];
-        $allData['shipping_country_id'] = $country_data['country_id']; //default/set
-        $allData['shipping_zone'] = '';
-        $allData['shipping_zone_id'] = 0;
-        $allData['payment_country'] = $country_data['name'];
-        $allData['payment_country_id'] = $country_data['country_id']; //default
-        $allData['payment_zone'] = '';
-        $allData['payment_zone_id'] = 0;
+        if ($this->cart->hasShipping()) {
+            if ($this->customer->isLogged()) {
+                $this->load->model('account/address');
+
+                $shipping_address = $this->model_account_address->getAddress($this->session->data['shipping_address_id']);
+            } elseif (isset($this->session->data['guest'])) {
+                $shipping_address = $this->session->data['guest']['shipping'];
+            }
+
+            $allData['shipping_firstname'] = $shipping_address['firstname'];
+            $allData['shipping_lastname'] = $shipping_address['lastname'];
+            $allData['shipping_company'] = $shipping_address['company'];
+            $allData['shipping_address_1'] = $shipping_address['address_1'];
+            $allData['shipping_address_2'] = $shipping_address['address_2'];
+            $allData['shipping_city'] = $shipping_address['city'];
+            $allData['shipping_postcode'] = $shipping_address['postcode'];
+            $allData['shipping_zone'] = $shipping_address['zone'];
+            $allData['shipping_zone_id'] = $shipping_address['zone_id'];
+            $allData['shipping_country'] = $shipping_address['country'];
+            $allData['shipping_country_id'] = $shipping_address['country_id'];
+            $allData['shipping_address_format'] = $shipping_address['address_format'];
+
+            if (isset($this->session->data['shipping_method']['title'])) {
+                $allData['shipping_method'] = $this->session->data['shipping_method']['title'];
+            } else {
+                $allData['shipping_method'] = '';
+            }
+
+            if (isset($this->session->data['shipping_method']['code'])) {
+                $allData['shipping_code'] = $this->session->data['shipping_method']['code'];
+            } else {
+                $allData['shipping_code'] = '';
+            }
+        } else {
+            $allData['shipping_firstname'] = '';
+            $allData['shipping_lastname'] = '';
+            $allData['shipping_company'] = '';
+            $allData['shipping_address_1'] = '';
+            $allData['shipping_address_2'] = '';
+            $allData['shipping_city'] = '';
+            $allData['shipping_postcode'] = '';
+            $allData['shipping_zone'] = '';
+            $allData['shipping_zone_id'] = '';
+            $allData['shipping_country'] = '';
+            $allData['shipping_country_id'] = '';
+            $allData['shipping_address_format'] = '';
+            $allData['shipping_method'] = '';
+            $allData['shipping_code'] = '';
+        }
 
         $allData['payment_method'] = "payu";
         $allData['payment_code'] = "payu";
         $allData['comment'] = 'Express Checkout by PayU';
+
+        if (!empty($this->request->server['HTTP_X_FORWARDED_FOR'])) {
+            $allData['forwarded_ip'] = $this->request->server['HTTP_X_FORWARDED_FOR'];
+        } elseif(!empty($this->request->server['HTTP_CLIENT_IP'])) {
+            $allData['forwarded_ip'] = $this->request->server['HTTP_CLIENT_IP'];
+        } else {
+            $allData['forwarded_ip'] = '';
+        }
+
+        if (isset($this->request->server['HTTP_USER_AGENT'])) {
+            $allData['user_agent'] = $this->request->server['HTTP_USER_AGENT'];
+        } else {
+            $allData['user_agent'] = '';
+        }
+
+        if (isset($this->request->server['HTTP_ACCEPT_LANGUAGE'])) {
+            $allData['accept_language'] = $this->request->server['HTTP_ACCEPT_LANGUAGE'];
+        } else {
+            $allData['accept_language'] = '';
+        }
 
         $totalreward = 0;
         $totalcost = 0;
@@ -887,6 +1057,12 @@ class ControllerPaymentPayU extends Controller
         $allData['currency_code'] = $currency_data['code'];
         $allData['currency_value'] = $currency_data['value'];
         $allData['ip'] = $_SERVER['REMOTE_ADDR'];
+
+        $allData['vouchers'] = array();
+
+        if (!empty($this->session->data['vouchers'])) {
+            $allData['vouchers'] = $this->session->data['vouchers'];
+        }
 
         $this->load->model('checkout/order');
         $order_id = $this->model_checkout_order->addOrder($allData);
