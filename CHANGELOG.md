@@ -1,3 +1,7 @@
+## 0.1.9
+
+* Fixed incorrect order's products amount
+
 ## 0.1.8
 
 * Fixed order status notifications
