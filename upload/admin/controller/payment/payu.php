@@ -1,9 +1,9 @@
 <?php
 /*
-* ver. 0.1.9
+* ver. 0.2.0
 * PayU Payment Modules
 *
-* @copyright  Copyright 2012 by PayU
+* @copyright  Copyright 2014 by PayU
 * @license    http://opensource.org/licenses/GPL-3.0  Open Software License (GPL 3.0)
 * http://www.payu.com
 * http://twitter.com/openpayu
@@ -37,10 +37,10 @@ class ControllerPaymentPayU extends Controller
 
         $this->data['entry_currency'] = $this->language->get('entry_currency');
         $this->data['entry_merchantposid'] = $this->language->get('entry_merchantposid');
-        $this->data['entry_test'] = $this->language->get('entry_test');
+        //$this->data['entry_test'] = $this->language->get('entry_test');
         $this->data['entry_signaturekey'] = $this->language->get('entry_signaturekey');
-        $this->data['entry_clientsecret'] = $this->language->get('entry_clientsecret');
-        $this->data['entry_posauthkey'] = $this->language->get('entry_posauthkey');
+        //$this->data['entry_clientsecret'] = $this->language->get('entry_clientsecret');
+        //$this->data['entry_posauthkey'] = $this->language->get('entry_posauthkey');
         $this->data['entry_clientid'] = $this->language->get('entry_clientid');
         $this->data['entry_status'] = $this->language->get('entry_status');
         $this->data['entry_sort_order'] = $this->language->get('entry_sort_order');
@@ -72,21 +72,21 @@ class ControllerPaymentPayU extends Controller
         } else {
             $this->data['error_merchantposid'] = '';
         }
-        if (isset($this->error['clientsecret'])) {
+        /* if (isset($this->error['clientsecret'])) {
             $this->data['error_clientsecret'] = $this->error['clientsecret'];
         } else {
             $this->data['error_clientsecret'] = '';
-        }
-        if (isset($this->error['clientid'])) {
+        } */
+        /* if (isset($this->error['clientid'])) {
             $this->data['error_clientid'] = $this->error['clientid'];
         } else {
             $this->data['error_clientid'] = '';
-        }
-        if (isset($this->error['posauthkey'])) {
+        } */
+        /* if (isset($this->error['posauthkey'])) {
             $this->data['error_posauthkey'] = $this->error['posauthkey'];
         } else {
             $this->data['error_posauthkey'] = '';
-        }
+        } */
         if (isset($this->error['sort_order'])) {
             $this->data['error_sort_order'] = $this->error['sort_order'];
         } else {
@@ -104,26 +104,26 @@ class ControllerPaymentPayU extends Controller
         } else {
             $this->data['payu_merchantposid'] = $this->config->get('payu_merchantposid');
         }
-        if (isset($this->request->post['payu_clientsecret'])) {
+      /*   if (isset($this->request->post['payu_clientsecret'])) {
             $this->data['payu_clientsecret'] = $this->request->post['payu_clientsecret'];
         } else {
             $this->data['payu_clientsecret'] = $this->config->get('payu_clientsecret');
-        }
-        if (isset($this->request->post['payu_posauthkey'])) {
+        } */
+        /* if (isset($this->request->post['payu_posauthkey'])) {
             $this->data['payu_posauthkey'] = $this->request->post['payu_posauthkey'];
         } else {
             $this->data['payu_posauthkey'] = $this->config->get('payu_posauthkey');
-        }
-        if (isset($this->request->post['payu_clientid'])) {
+        } */
+        /* if (isset($this->request->post['payu_clientid'])) {
             $this->data['payu_clientid'] = $this->request->post['payu_clientid'];
         } else {
             $this->data['payu_clientid'] = $this->config->get('payu_clientid');
-        }
-        if (isset($this->request->post['payu_test'])) {
+        } */
+        /* if (isset($this->request->post['payu_test'])) {
             $this->data['payu_test'] = $this->request->post['payu_test'];
         } else {
             $this->data['payu_test'] = $this->config->get('payu_test');
-        }
+        } */
         if (isset($this->request->post['payu_status'])) {
             $this->data['payu_status'] = $this->request->post['payu_status'];
         } else {
@@ -184,11 +184,11 @@ class ControllerPaymentPayU extends Controller
         } else {
             $this->data['payu_sort_order'] = $this->config->get('payu_sort_order');
         }
-        if (isset($this->request->post['payu_test'])) {
+        /* if (isset($this->request->post['payu_test'])) {
             $this->data['payu_test'] = $this->request->post['payu_test'];
         } else {
             $this->data['payu_test'] = $this->config->get('payu_test');
-        }
+        } */
 
         $getjson = $this->getjson();
         $jsondata = json_decode($getjson, true);
@@ -250,15 +250,15 @@ class ControllerPaymentPayU extends Controller
         if (!$this->request->post['payu_merchantposid']) {
             $this->error['merchantposid'] = $this->language->get('error_merchantposid');
         }
-        if (!$this->request->post['payu_clientsecret']) {
+        /* if (!$this->request->post['payu_clientsecret']) {
             $this->error['clientsecret'] = $this->language->get('error_clientsecret');
-        }
-        if (!$this->request->post['payu_clientid']) {
+        } */
+        /* if (!$this->request->post['payu_clientid']) {
             $this->error['clientid'] = $this->language->get('error_clientid');
-        }
-        if (!$this->request->post['payu_posauthkey']) {
+        } */
+        /* if (!$this->request->post['payu_posauthkey']) {
             $this->error['posauthkey'] = $this->language->get('error_posauthkey');
-        }
+        } */
         if (!$this->request->post['payu_sort_order']) {
             $this->error['sort_order'] = $this->language->get('error_sort_order');
         }

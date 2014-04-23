@@ -38,22 +38,7 @@
         <?php } ?>
     </td>
 </tr>
-<!-- Sandbox -->
-<tr>
-    <td><?php echo $entry_test; ?></td>
-    <td><?php if ($payu_test) { ?>
-        <input type="radio" name="payu_test" value="1"  checked="checked"/>
-        <?php echo $text_yes; ?>
-        <input type="radio" name="payu_test" value="0" />
-        <?php echo $text_no; ?>
-        <?php } else { ?>
-        <input type="radio" name="payu_test" value="1" />
-        <?php echo $text_yes; ?>
-        <input type="radio" name="payu_test" value="0" checked="checked"/>
-        <?php echo $text_no; ?>
-        <?php } ?>
-    </td>
-</tr>
+
 <!-- merchant POS ID -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_merchantposid; ?></td>
@@ -64,25 +49,7 @@
     </td>
 </tr>
 
-<!-- client ID -->
-<tr>
-    <td><span class="required">*</span> <?php echo $entry_clientid; ?></td>
-    <td><input type="text" name="payu_clientid" value="<?php echo $payu_clientid; ?>" size="40" />
-        <?php if ($error_clientid) { ?>
-        <span class="error"><?php echo $error_clientid; ?></span>
-        <?php } ?>
-    </td>
-</tr>
 <!-- signature key -->
-<tr>
-    <td><span class="required">*</span> <?php echo $entry_clientsecret; ?></td>
-    <td><input type="text" name="payu_clientsecret" value="<?php echo $payu_clientsecret; ?>" size="40" />
-        <?php if ($error_clientsecret) { ?>
-        <span class="error"><?php echo $error_clientsecret; ?></span>
-        <?php } ?>
-    </td>
-</tr>
-<!-- client secret -->
 <tr>
     <td><span class="required">*</span> <?php echo $entry_signaturekey; ?></td>
     <td><input type="text" name="payu_signaturekey" value="<?php echo $payu_signaturekey; ?>" size="40" />
@@ -91,17 +58,8 @@
         <?php } ?>
     </td>
 </tr>
-<!-- POS Auth Key -->
-<tr>
-    <td><span class="required">*</span> <?php echo $entry_posauthkey; ?></td>
-    <td><input type="text" name="payu_posauthkey" value="<?php echo $payu_posauthkey; ?>" size="40" />
-        <?php if ($error_posauthkey) { ?>
-        <span class="error"><?php echo $error_posauthkey; ?></span>
-        <?php } ?>
-    </td>
-</tr>
-<!--Statuses config -->
 
+<!--Statuses config -->
 <tr>
     <td><?php echo $entry_cancelled_status; ?></td>
     <td><select name="payu_cancelled_status">

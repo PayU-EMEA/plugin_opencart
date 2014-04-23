@@ -1,19 +1,19 @@
 <?php
 /*
-* ver. 0.1.9
+* ver. 0.2.0
 * PayU Payment Modules
 *
-* @copyright  Copyright 2012 by PayU
+* @copyright  Copyright 2014 by PayU
 * @license    http://opensource.org/licenses/GPL-3.0  Open Software License (GPL 3.0)
 * http://www.payu.com
 * http://twitter.com/openpayu
 */
 // Heading
-$_['heading_title'] = 'konto PayU';
+$_['heading_title'] = 'PayU';
 
 // Text
 $_['text_module'] = 'Moduły';
-$_['text_success'] = "Sukces: Udało się zmodyfikować moduł 'konto PayU'!";
+$_['text_success'] = "Sukces: Udało się zmodyfikować moduł 'PayU'!";
 $_['text_content_top'] = 'Góra strony';
 $_['text_content_bottom'] = 'Dół strony';
 $_['text_column_left'] = 'Lewa kolumna';
@@ -26,4 +26,4 @@ $_['entry_status'] = 'Status:';
 $_['entry_sort_order'] = 'Kolejność:';
 $_['entry_display'] = 'Wyświetlanie przycisku:';
 // Error
-$_['error_permission'] = "Uwaga: Brak uprawnień do modyfikacji modułu 'konto PayU'!";
+$_['error_permission'] = "Uwaga: Brak uprawnień do modyfikacji modułu 'PayU'!";

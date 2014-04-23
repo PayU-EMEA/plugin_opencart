@@ -7,12 +7,14 @@
 <?php } ?>
 
 <?php if (!$error) { ?>
-<form action="<?php echo $actionUrl ?>" method="get" id="payment">
-	<input type="hidden" name="sessionId" value="<?php echo $sessionId;?>">
-	<input type="hidden" name="oauth_token" value="<?php echo $accessToken;?>">
-	<input type="hidden" name="lang" value="<?php echo $lang ?>">
+<script type="text/javascript">
+function goToPayUActionUrl(){
+    window.location.replace(" <?php echo urldecode($actionUrl) ?>");
+}
+</script>
+<form action="<?php echo urldecode($actionUrl) ?>" method="get" id="payment">
   <div class="buttons">
-    <div class="right"><a onclick="$('#payment').submit();"><img src="<?php echo $payu_button; ?>"></a></div>
+    <div class="right"><a onclick="goToPayUActionUrl();"><img src="<?php echo $payu_button; ?>" /></a></div>
   </div>
 </form>
 <?php } ?>

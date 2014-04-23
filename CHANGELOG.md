@@ -1,3 +1,7 @@
+## 0.2.0
+
+* SDK v2 compatible
+
 ## 0.1.9
 
 * Fixed incorrect order's products amount

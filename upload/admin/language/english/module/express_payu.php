@@ -1,15 +1,15 @@
 <?php
 /*
-* ver. 0.1.9
+* ver. 0.2.0
 * PayU Payment Modules
 *
-* @copyright  Copyright 2012 by PayU
+* @copyright  Copyright 2014 by PayU
 * @license    http://opensource.org/licenses/GPL-3.0  Open Software License (GPL 3.0)
 * http://www.payu.com
 * http://twitter.com/openpayu
 */
 // Heading
-$_['heading_title'] = 'PayU account';
+$_['heading_title'] = 'PayU';
 
 // Text
 $_['text_module'] = 'Modules';
