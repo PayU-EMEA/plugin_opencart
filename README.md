@@ -73,7 +73,6 @@ The main parameters for plugin configuration are as follows:
 |:---------:|:------:|:-----------:|
 |Status|Enabled/Disabled|Specifies whether the module is enabled.|
 |Sort Order|Positive integers|The priority that the payment method gets in the payment methods list.|
-|Test Mode On|Yes/No|If you are in the test mode, the transactions are only simulated and no real payments are made. Use the test mode to see how the transactions work.|
 
 #### Parameters of production and test environments
 
@@ -85,10 +84,7 @@ The test environment is called *Sandbox* and you can adjust it separately from t
 | Parameter | Description | 
 |:---------:|:-----------:|
 |POS ID|Unique ID of the POS|
-|Client ID| Unique ID of the client|
-|Key|Unique MD5 key
 |Second Key| MD5 key for securing communication|
-|POS Auth Key|Transaction authorization key|
 
 #### Status parameters
 
