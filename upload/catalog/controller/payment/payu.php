@@ -634,15 +634,16 @@ class ControllerPaymentPayU extends Controller
                     $shippingCost *= 100;
                 }
                 
+                $price = $this->currency->format(
+                        $this->tax->calculate(
+                                $shippingCost,
+                                $this->session->data['shipping_method']['tax_class_id']
+                        ));
+                
+                $price = preg_replace("/[^0-9]/", "", $price);
+                
                 $shippingCostList ['shippingMethods'] [] = array (
-                        'name' => $order_info['shipping_method'],'country' => $order_info['payment_iso_code_2'],'price' => str_ireplace(
-                                    array('.','PLN'),
-                                    array('',''),
-                                    $this->currency->format(
-                                        $this->tax->calculate(
-                                            $shippingCost,
-                                            $this->session->data['shipping_method']['tax_class_id']
-                                        )))
+                        'name' => $order_info['shipping_method'],'country' => $order_info['payment_iso_code_2'],'price' => $price
                 );
 
             } else {
@@ -660,18 +661,17 @@ class ControllerPaymentPayU extends Controller
                         $onemethod['cost'] *= 100;
                     }
                     
+                    $price = $this->currency->format(
+                            $this->tax->calculate($onemethod['cost'], $onemethod['tax_class_id']),
+                            $order_info['currency_code'],
+                            false,
+                            false
+                    );
+                    
+                    $price = preg_replace("/[^0-9]/", "", $price);
                     
                     $shippingCostList ['shippingMethods'] [] = array (
-                            'name' => $onemethod['title'],'country' => $country['iso_code_2'],'price' => str_ireplace(
-                                array('.','PLN'),
-                                array('',''),
-                                $this->currency->format(
-                                    $this->tax->calculate($onemethod['cost'], $onemethod['tax_class_id']),
-                                    $order_info['currency_code'],
-                                    false,
-                                    false
-                                )
-                            )
+                            'name' => $onemethod['title'],'country' => $country['iso_code_2'],'price' => $price
                     );
                     
                 }
