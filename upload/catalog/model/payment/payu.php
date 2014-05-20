@@ -48,9 +48,11 @@ class ModelPaymentPayu extends Model
         $data['shipping_country_id'] = $shippingcountry->row['country_id'];
         if (!empty($data['shipping_zone'])) {
             $shippingzone = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone WHERE name = '" . $data['shipping_zone'] . "'");
-            $data['shipping_zone_id'] = $shippingzone->row['zone_id'];
-            $data['shipping_zone_code'] = $shippingzone->row['code'];
-            $data['shipping_zone'] = $shippingzone->row['name'];
+            if(!empty($shippingzone)){
+                $data['shipping_zone_id'] = $shippingzone->row['zone_id'];
+                $data['shipping_zone_code'] = $shippingzone->row['code'];
+                $data['shipping_zone'] = $shippingzone->row['name'];
+            }
         } else {
             $data['shipping_zone_id'] = 7777777777;
             $data['shipping_zone_code'] = 'zone was not provided by PAYU';
