@@ -404,7 +404,7 @@ class ControllerPaymentPayU extends Controller
                 $update_data['telephone'] = $customerdata->phone;
             }
 
-            if (!empty($customerdata['Shipping'])) {
+            if (isset($customerdata['Shipping']) && !empty($customerdata['Shipping'])) {
                 $update_data['shipping_method'] = $customerdata['Shipping']['ShippingType'];
                 $update_data['shipping_iso_code_2'] = $customerdata['Shipping']['Address']['CountryCode'];
                 foreach ($country_list as $country) {
