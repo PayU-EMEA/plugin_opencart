@@ -74,7 +74,7 @@ The main parameters for plugin configuration are as follows:
 |Status|Enabled/Disabled|Specifies whether the module is enabled.|
 |Sort Order|Positive integers|The priority that the payment method gets in the payment methods list.|
 
-#### Parameters of production environments
+#### Parameters of production environment
 
 <!--To check the values of the parameters below, go to **Administration Panel** > **My shops** > **Your shop** > **POS** and click the name of a given POS.
 -->
