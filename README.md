@@ -74,12 +74,10 @@ The main parameters for plugin configuration are as follows:
 |Status|Enabled/Disabled|Specifies whether the module is enabled.|
 |Sort Order|Positive integers|The priority that the payment method gets in the payment methods list.|
 
-#### Parameters of production and test environments
+#### Parameters of production environments
 
-The test environment is called *Sandbox* and you can adjust it separately from the production environment to see which configuration suits you the best.
 <!--To check the values of the parameters below, go to **Administration Panel** > **My shops** > **Your shop** > **POS** and click the name of a given POS.
 -->
-**Important:** If you set the [**Test Mode On**][3.1.1] parameter to *Yes*, the transactions in your shop are only simulated. No real payments are made.
 
 | Parameter | Description | 
 |:---------:|:-----------:|
