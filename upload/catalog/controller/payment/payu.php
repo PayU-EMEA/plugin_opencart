@@ -404,9 +404,12 @@ class ControllerPaymentPayU extends Controller
                 $update_data['telephone'] = $customerdata->phone;
             }
 
-            if (isset($customerdata['Shipping']) && !empty($customerdata['Shipping'])) {
-                $update_data['shipping_method'] = $customerdata['Shipping']['ShippingType'];
-                $update_data['shipping_iso_code_2'] = $customerdata['Shipping']['Address']['CountryCode'];
+            if (isset($customerdata->delivery) && !empty($customerdata->delivery)) {
+            	
+            	$delivery = $customerdata->delivery;
+            	
+                //$update_data['shipping_method'] = $customerdata['Shipping']['ShippingType'];
+/*                 $update_data['shipping_iso_code_2'] = $delivery->countryCode;
                 foreach ($country_list as $country) {
                     if ($country['iso_code_2'] == $update_data['shipping_iso_code_2']) {
                         $country_id = $country['country_id'];
@@ -427,32 +430,33 @@ class ControllerPaymentPayU extends Controller
                     }
                 }
 
-                $update_data['shipping_code'] = $chosenOne['code'];
+                $update_data['shipping_code'] = $chosenOne['code']; */
 
-                if (isset($customerdata['Shipping']['Address']) && !empty($customerdata['Shipping']['Address'])) {
-                    if (isset($customerdata['Shipping']['Address']['State'])) {
-                        $update_data['shipping_zone'] = $customerdata['Shipping']['Address']['State'];
+                if (isset($delivery) && !empty($delivery)) {
+                    if (isset($delivery->state)) {
+                        $update_data['shipping_zone'] = $delivery->state;
                     }
 
                     list($update_data['shipping_firstname'], $update_data['shipping_lastname']) = explode(
                         " ",
-                        $customerdata['Shipping']['Address']['RecipientName'],
+                        $delivery->recipientName,
                         2
                     );
-                    $addressstring = $customerdata['Shipping']['Address']['Street'] . " " . $customerdata['Shipping']['Address']['HouseNumber'] . (isset($customerdata['Shipping']['Address']['ApartmentNumber']) ? "/" . $customerdata['Shipping']['Address']['ApartmentNumber'] : '') . ' ' . $customerdata['Shipping']['Address']['PostalCode'];
+                    $addressstring = $delivery->street . ' ' . $delivery->postalCode;
                     $update_data['shipping_address_1'] = substr($addressstring, 0, 128);
                     $update_data['shipping_address_2'] = substr($addressstring, 128);
-                    $update_data['shipping_city'] = $customerdata['Shipping']['Address']['City'];
-                    $update_data['shipping_postcode'] = $customerdata['Shipping']['Address']['PostalCode'];
-                    $newTotal = $customerdata['Shipping']['ShippingCost']['Net'];
+                    if(!empty($delivery->city))
+                    	$update_data['shipping_city'] = $delivery->city;
+                    $update_data['shipping_postcode'] = $delivery->postalCode;
+                    //$newTotal = $customerdata['Shipping']['ShippingCost']['Net'];
                 }
 
-                if (isset($update_data['products'])) {
+                /* if (isset($update_data['products'])) {
                     foreach ($update_data['products'] as $oneProduct) {
                         $newTotal += $oneProduct['price'] * $oneProduct['quantity'];
                     }
                 }
-                $update_data['total'] = $newTotal;
+                $update_data['total'] = $newTotal; */
             }
             $this->model_payment_payu->customerupdate($order_id, $update_data);
         }
