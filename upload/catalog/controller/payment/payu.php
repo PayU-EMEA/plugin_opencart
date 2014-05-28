@@ -18,6 +18,8 @@ class ControllerPaymentPayU extends Controller
     const ORDER_V2_COMPLETED = 'COMPLETED';
     const ORDER_V2_WAITING_FOR_CONFIRMATION = 'WAITING_FOR_CONFIRMATION';
     
+    protected $vouchersAmount = 0.0;
+    
     //loading PayU SDK
     protected function loadLibConfig()
     {
@@ -526,12 +528,20 @@ class ControllerPaymentPayU extends Controller
         $orderType = 'VIRTUAL';
 
         $decimalPlace = $this->currency->getDecimalPlace();
+        
+        if (!empty($this->session->data['vouchers'])) {
+        	foreach ($this->session->data['vouchers'] as $voucher) {
+        		$this->vouchersAmount += $this->currency->format($voucher['amount']);
+        	}
+        }
+        
         foreach ($this->cart->getProducts() as $item) {
             if(empty($decimalPlace)) {
                 $item['price'] *= 100;
             }
-
+            
             $gross = $this->tax->calculate($item['price'], $item['tax_class_id']);
+            
             if ($item['shipping'] == 1) {
                 $orderType = 'MATERIAL';
             }
@@ -629,10 +639,12 @@ class ControllerPaymentPayU extends Controller
                 
             }
 
+            $shippingCostAmount = 0.0;
+            
             if (!empty($order_info['shipping_method'])) {
 
                 $shippingCostList = array();
-                $shippingCost = $this->session->data['shipping_method']['cost'];
+                $shippingCost = $shippingCostAmount = $this->session->data['shipping_method']['cost'];
                 if(empty($decimalPlace))
                 {
                     $shippingCost *= 100;
@@ -649,6 +661,7 @@ class ControllerPaymentPayU extends Controller
                 $shippingCostList ['shippingMethods'] [] = array (
                         'name' => $order_info['shipping_method'],'country' => $order_info['payment_iso_code_2'],'price' => $price
                 );
+                
 
             } else {
                 
@@ -700,7 +713,10 @@ class ControllerPaymentPayU extends Controller
         $OCRV2 ['cancelUrl'] = $OCReq['OrderCancelUrl'];
         $OCRV2 ['completeUrl'] = $OCReq['OrderCompleteUrl'];
         $OCRV2 ['currencyCode'] = $order_info['currency_code'];
-        $OCRV2 ['totalAmount'] = $grandTotal;
+        $OCRV2 ['totalAmount'] = str_ireplace(
+                            '.',
+                            '',
+                            $this->currency->format($order_info['total'] - $shippingCostAmount, $order_info['currency_code'], false, false));;
         $OCRV2 ['extOrderId'] = $this->session->data['order_id'];
         $OCRV2 ['shippingMethods'] = $shippingCostList;
         $OCRV2 ['buyer'] = $customer;
@@ -834,6 +850,8 @@ class ControllerPaymentPayU extends Controller
                     'message'          => $voucher['message'],
                     'amount'           => $voucher['amount']
                 );
+                
+                $this->vouchersAmount += $voucher['amount'];
             }
         }
 
