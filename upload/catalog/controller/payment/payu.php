@@ -526,6 +526,7 @@ class ControllerPaymentPayU extends Controller
         $grandTotal = 0;
         $cartItems = array();
         $orderType = 'VIRTUAL';
+        $shippingCostAmount = 0.0;
 
         $decimalPlace = $this->currency->getDecimalPlace();
         
@@ -638,16 +639,16 @@ class ControllerPaymentPayU extends Controller
                     'recipientEmail' => $order_info['email'] );
                 
             }
-
-            $shippingCostAmount = 0.0;
             
             if (!empty($order_info['shipping_method'])) {
 
                 $shippingCostList = array();
                 $shippingCost = $shippingCostAmount = $this->session->data['shipping_method']['cost'];
+                
                 if(empty($decimalPlace))
                 {
                     $shippingCost *= 100;
+                    $shippingCostAmount = $shippingCost;
                 }
                 
                 $price = $this->currency->format(
@@ -697,14 +698,6 @@ class ControllerPaymentPayU extends Controller
 
         }
         
-        /* if(isset ( $shippingCostArray ) && $shippingCost > 0 && !empty ( $shippingCostArray['ShippingCostList']['ShippingCost'] ) ){
-            $OCRV2 ['products'] ['products'] [] = array (
-                    'quantity' => 1 ,
-                    'name' => 'Shipping costs' . ' - ' . $shippingCostArray['ShippingCostList']['ShippingCost']['Type'] ,
-                    'unitPrice' => $shippingCostArray['ShippingCostList']['ShippingCost']['Price']['Gross'] );
-            $grandTotal += $shippingCostArray['ShippingCostList']['ShippingCost']['Price']['Gross'];
-        } */
-        
         $OCRV2 ['merchantPosId'] = OpenPayU_Configuration::getMerchantPosId();
         $OCRV2 ['orderUrl'] = $this->url->link('payment/payu/callback') . '?order=' . $this->session->data['order_id'];
         $OCRV2 ['description'] = "Zamówienie #" . $this->session->data['order_id'];
@@ -716,9 +709,11 @@ class ControllerPaymentPayU extends Controller
         $OCRV2 ['totalAmount'] = str_ireplace(
                             '.',
                             '',
-                            $this->currency->format($order_info['total'] - $shippingCostAmount, $order_info['currency_code'], false, false));;
+                            $this->currency->format($order_info['total'] - $shippingCostAmount, $order_info['currency_code'], false, false));
+        
         $OCRV2 ['extOrderId'] = $this->session->data['order_id'];
-        $OCRV2 ['shippingMethods'] = $shippingCostList;
+        if(isset($shippingCostList))
+        	$OCRV2 ['shippingMethods'] = $shippingCostList;
         $OCRV2 ['buyer'] = $customer;
         
         return $OCRV2;
