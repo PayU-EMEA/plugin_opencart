@@ -537,7 +537,8 @@ class ControllerPaymentPayU extends Controller
         }
         
         foreach ($this->cart->getProducts() as $item) {
-            if(empty($decimalPlace)) {
+            
+        	if(empty($decimalPlace)) {
                 $item['price'] *= 100;
             }
             
@@ -548,8 +549,8 @@ class ControllerPaymentPayU extends Controller
             }
             
             $itemGross = str_ireplace(
-                            '.',
-                            '',
+                            array('.',' '),
+                            array('',''),
                             $this->currency->format($gross, $order_info['currency_code'], false, false));
             
             $OCRV2['products']  ['products'] [] = array (
