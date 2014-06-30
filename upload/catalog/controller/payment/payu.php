@@ -678,6 +678,7 @@ class ControllerPaymentPayU extends Controller
                     if(empty($decimalPlace))
                     {
                         $onemethod['cost'] *= 100;
+                        $shippingCostAmount = $shippingCost;
                     }
                     
                     $price = $this->currency->format(
@@ -707,10 +708,19 @@ class ControllerPaymentPayU extends Controller
         $OCRV2 ['cancelUrl'] = $OCReq['OrderCancelUrl'];
         $OCRV2 ['completeUrl'] = $OCReq['OrderCompleteUrl'];
         $OCRV2 ['currencyCode'] = $order_info['currency_code'];
-        $OCRV2 ['totalAmount'] = str_ireplace(
-                            '.',
-                            '',
-                            $this->currency->format($order_info['total'] - $shippingCostAmount, $order_info['currency_code'], false, false));
+        
+        $total = $order_info['total'];
+        
+        if(empty($decimalPlace)) {
+                 $total *= 100;
+        }
+        
+        $total = str_ireplace(
+                            array('.',' '),
+                            array('',''),
+                            $this->currency->format($total - $shippingCostAmount, $order_info['currency_code'], false, false));
+        
+        $OCRV2 ['totalAmount'] = $total;
         
         $OCRV2 ['extOrderId'] = $this->session->data['order_id'];
         if(isset($shippingCostList))
