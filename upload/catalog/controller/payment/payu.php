@@ -229,7 +229,7 @@ class ControllerPaymentPayU extends Controller
         $this->load->model('payment/payu');
         
         $body = file_get_contents ( 'php://input' );
-        $data = stripslashes ( trim ( $body ) );
+        $data = trim ( $body );
         
         $result = OpenPayU_Order::consumeNotification ( $data );
         $response = $result->getResponse();
