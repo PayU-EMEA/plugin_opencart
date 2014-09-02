@@ -23,15 +23,15 @@ class ControllerPaymentPayU extends Controller
     //loading PayU SDK
     protected function loadLibConfig()
     {
-        require_once(DIR_SYSTEM . 'library/OpenPayU_SDK_v2/openpayu.php');
+        require_once(DIR_SYSTEM . 'library/sdk_v21/openpayu.php');
 
         OpenPayU_Configuration::setMerchantPosId($this->config->get('payu_merchantposid'));
         OpenPayU_Configuration::setSignatureKey($this->config->get('payu_signaturekey'));
         OpenPayU_Configuration::setEnvironment('secure');
-        OpenPayU_Configuration::setApiVersion ( 2 );
-        OpenPayU_Configuration::setSender("OpenCart ver/Plugin ver 1.9.0" );
+        OpenPayU_Configuration::setApiVersion ( 2.1 );
+        OpenPayU_Configuration::setSender("OpenCart ver/Plugin ver 2.1.1" );
 
-        $this->logger = new Log('payu.txt');
+        $this->logger = new Log('payu.log');
     }
 
     protected function index()
@@ -48,11 +48,12 @@ class ControllerPaymentPayU extends Controller
         $this->data['error'] = false;      
 
         $order = $this->buildorder();
-        
-        $result = OpenPayU_Order::create($order);
+        $this->logger->write(OpenPayU_Configuration::getServiceUrl());
+//        $this->logger->write($order);
 
+        $result = OpenPayU_Order::create($order);
+        $this->logger->write($result);
         if ($result->getStatus () == 'SUCCESS') {
-            
             $this->session->data['sessionId'] = $result->getResponse ()->orderId;
             
             $this->model_payment_payu->addOrder($this->session->data['order_id'], $this->session->data['sessionId']);
@@ -252,21 +253,16 @@ class ControllerPaymentPayU extends Controller
                     );
                 } else {
                     
-                    $this->updatecustomerdata($order_id, $retrieve_response->orders->orders[0]->buyer);
+                    $this->updatecustomerdata($order_id, $retrieve_response->orders[0]->buyer);
                     
-                    $orderStatus = $retrieve_response->orders->orders[0]->status;
-                    $paymentStatus = $retrieve_response->orders->orders[0]->status;
+                    $orderStatus = $retrieve_response->orders[0]->status;
+                    $paymentStatus = $retrieve_response->orders[0]->status;
                     
                     $newstatus = $this->getpaymentstatusid($paymentStatus, $orderStatus);
                     
                     $this->updatestatus($order_id, $newstatus);
 
-                    $rsp = OpenPayU::buildOrderNotifyResponse ( $retrieve_response->orders->orders[0]->orderId );
-                
-                    if (!empty($rsp)) {
-                            header("Content-Type: application/json");
-                            echo $rsp;
-                    }
+                    header("HTTP/1.1 200 OK");
                 }
 
             } catch (Exception $e) {
@@ -553,7 +549,7 @@ class ControllerPaymentPayU extends Controller
                             array('',''),
                             $this->currency->format($gross, $order_info['currency_code'], false, false));
             
-            $OCRV2['products']  ['products'] [] = array (
+            $OCRV2['products'] [] = array (
                     'quantity' => $item['quantity'],'name' => $item['name'],'unitPrice' => $itemGross
             );
             
@@ -630,7 +626,7 @@ class ControllerPaymentPayU extends Controller
             if (!empty($customer) && !empty($order_info['shipping_city']) && !empty($order_info['shipping_postcode']) && !empty($order_info['payment_iso_code_2'])) {
                 
                 $customer['delivery'] = array(
-                    'street' => $order_info['shipping_address_1'] . " " . $order_info['shipping_address_2'],
+                    'street' => $order_info['shipping_address_1'] . " " . ($order_info['shipping_address_2'] ?$order_info['shipping_address_2']: '')  ,
                     'postalCode' => $order_info['shipping_postcode'],
                     'city' => $order_info['shipping_city'],
                     //'State' => $order_info['shipping_zone'],
@@ -706,7 +702,7 @@ class ControllerPaymentPayU extends Controller
         $OCRV2 ['customerIp'] = $OCReq['CustomerIp'];
         $OCRV2 ['notifyUrl'] = $OCReq['NotifyUrl'];
         $OCRV2 ['cancelUrl'] = $OCReq['OrderCancelUrl'];
-        $OCRV2 ['completeUrl'] = $OCReq['OrderCompleteUrl'];
+        $OCRV2 ['continueUrl'] = $OCReq['OrderCompleteUrl'];
         $OCRV2 ['currencyCode'] = $order_info['currency_code'];
         
         $total = $order_info['total'];
@@ -724,7 +720,7 @@ class ControllerPaymentPayU extends Controller
         
         $OCRV2 ['extOrderId'] = $this->session->data['order_id'];
         if(isset($shippingCostList))
-        	$OCRV2 ['shippingMethods'] = $shippingCostList;
+        	$OCRV2 ['shippingMethods'] = $shippingCostList['shippingMethods'];
         $OCRV2 ['buyer'] = $customer;
         
         return $OCRV2;
