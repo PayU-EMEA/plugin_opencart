@@ -1,3 +1,6 @@
+## 2.1.2
+* "Pay with PayU" flow fixed
+
 ## 2.1.1
 * API 2.1 compatible
 
