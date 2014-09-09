@@ -474,29 +474,21 @@ class ControllerPaymentPayU extends Controller
         }
 
         $this->session->data['order_id'] = $this->collectData();
-        
         $order = $this->buildorder();
 
         $result = OpenPayU_Order::create($order);
-        
+
         ob_end_flush();
 
-        if ($result->getSuccess()) {
-            $this->model_payment_payu->addOrder($this->session->data['order_id'], $this->session->data['sessionId']);
+        if ($result->getStatus()=='SUCCESS') {
 
-            $result = OpenPayU_OAuth::accessTokenByClientCredentials();
+                $this->session->data['sessionId'] = $result->getResponse ()->orderId;
 
-            if ($result->getSuccess()) {
-                $values = array(
-                    'sessionId' => $this->session->data['sessionId'],
-                    'oauth_token' => $result->getAccessToken(),
-                    'lang' => strtolower($this->session->data['language'])
-                );
+                $this->model_payment_payu->addOrder($this->session->data['order_id'], $this->session->data['sessionId']);
+                $this->data['actionUrl'] = $result->getResponse ()->redirectUri;
 
-                $this->redirect(OpenPayU_Configuration::getSummaryUrl() . '?' . http_build_query($values, '&'));
-            } else {
-                $this->logger->write($result->getError() . ' [' . serialize($result->getResponse()) . ']');
-            }
+            header('Location:'. $this->data['actionUrl']);
+
         } else {
             $this->logger->write($result->getError() . ' [' . serialize($result->getResponse()) . ']');
             $this->redirect($this->url->link('checkout/cart'));
