@@ -1,4 +1,7 @@
 # PayU account plugin for OpenCart over 1.5.3
+
+**Note: Plugin does not support OpenCart 2.0**
+
 -------
 ``This plugin is released under the GPL license.``
 
