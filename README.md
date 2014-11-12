@@ -2,6 +2,7 @@
 
 **Note: Plugin does not support OpenCart 2.0**
 
+If you have any questions or issues, feel free to contact our technical support: tech@payu.pl.
 -------
 ``This plugin is released under the GPL license.``
 
