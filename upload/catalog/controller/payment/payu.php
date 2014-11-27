@@ -50,7 +50,6 @@ class ControllerPaymentPayU extends Controller
         $order = $this->buildorder();
 
         $result = OpenPayU_Order::create($order);
-        print_r($order);
 //        $this->logger->write($result);
         if ($result->getStatus () == 'SUCCESS') {
             $this->session->data['sessionId'] = $result->getResponse ()->orderId;
