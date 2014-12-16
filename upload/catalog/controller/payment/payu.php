@@ -1025,7 +1025,7 @@ class ControllerPaymentPayU extends Controller
         $totalProducts = str_ireplace(
             array('.', ' '),
             array('', ''),
-            $this->currency->format((int)($order_info['total']) - $shippingCostAmount, $order_info['currency_code'], false, false));
+            $this->currency->format($this->toAmount((int)($order_info['total'])) - $shippingCostAmount, $order_info['currency_code'], false, false));
         $OCRV2['products'] [] = array(
             'quantity' => 1,
             'name' => 'Order id:' . $this->session->data['order_id'],
