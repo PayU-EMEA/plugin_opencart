@@ -1,3 +1,14 @@
+##2.1.5
+* New payu php library changes included
+
+##2.1.4
+* New DSK library included (with SSL3 dissabled)
+* Negative amount bug fixed
+
+##2.1.3
+* Possibility to buy Gift Vouchers
+* minor code refactoring
+
 ## 2.1.2
 * "Pay with PayU" flow fixed
 
