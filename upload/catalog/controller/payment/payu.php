@@ -251,8 +251,7 @@ class ControllerPaymentPayU extends Controller
                     );
                 } else {
                     
-                    $this->updatecustomerdata($order_id, $retrieve_response->orders[0]->buyer);
-                    
+
                     $orderStatus = $retrieve_response->orders[0]->status;
                     $paymentStatus = $retrieve_response->orders[0]->status;
                     
@@ -362,102 +361,6 @@ class ControllerPaymentPayU extends Controller
         return 0;
     }
 
-    //Customer data update from the data sent by PayU
-    public function updatecustomerdata($order_id, $customerdata)
-    {
-        $this->load->model('payment/payu');
-        $this->load->model('checkout/order');
-
-        $update_data = $this->model_checkout_order->getOrder($order_id);
-        $this->load->model('localisation/country');
-        $country_list = $this->model_localisation_country->getCountries();
-        $country_id = 0;
-        
-        if (!empty($update_data)) {
-            if (!empty($customerdata->delivery)) {
-                
-                $delivery = $customerdata->delivery;
-                
-                $update_data['payment_iso_code_2'] = $delivery->countryCode;
-                $update_data['payment_zone'] = $delivery->state;
-                if ($delivery->recipientName) {
-                    $firstlastcompany = explode(" ", $delivery->recipientName, 3);
-                    $update_data['payment_firstname'] = $firstlastcompany[0];
-                    $update_data['payment_lastname'] = $firstlastcompany[1];
-                    $update_data['payment_company'] = ' ';
-                }
-                $addressstring = $delivery->street;
-                $update_data['payment_address_1'] = substr($addressstring, 0, 128);
-                $update_data['payment_address_2'] = substr($addressstring, 128);
-                $update_data['payment_city'] = $delivery->city;
-                $update_data['payment_postcode'] = $delivery->postalCode;
-            }
-
-            if (!empty($customerdata)) {
-                $update_data['firstname'] = $customerdata->firstName;
-                $update_data['lastname'] = $customerdata->lastName;
-                $update_data['email'] = $customerdata->email;
-                $update_data['telephone'] = $customerdata->phone;
-            }
-
-            if (isset($customerdata->delivery) && !empty($customerdata->delivery)) {
-            	
-            	$delivery = $customerdata->delivery;
-            	
-                //$update_data['shipping_method'] = $customerdata['Shipping']['ShippingType'];
-/*                 $update_data['shipping_iso_code_2'] = $delivery->countryCode;
-                foreach ($country_list as $country) {
-                    if ($country['iso_code_2'] == $update_data['shipping_iso_code_2']) {
-                        $country_id = $country['country_id'];
-                    }
-                }
-                $update_data['shipping_country_id'] = $country_id;
-                $this->tax->setShippingAddress($update_data['shipping_country_id'], $update_data['shipping_zone_id']);
-                $this->tax->setPaymentAddress($update_data['payment_country_id'], $update_data['payment_zone_id']);
-                $this->tax->setStoreAddress(
-                    $this->config->get('config_country_id'),
-                    $this->config->get('config_zone_id')
-                );
-                $allShippings = $this->getShippings($order_id, $country_id);
-                $update_data['shipping_code'] = "Unknown";
-                foreach ($allShippings as $oneShipping) {
-                    if ($update_data['shipping_method'] == $oneShipping['title']) {
-                        $chosenOne = $oneShipping;
-                    }
-                }
-
-                $update_data['shipping_code'] = $chosenOne['code']; */
-
-                if (isset($delivery) && !empty($delivery)) {
-                    if (isset($delivery->state)) {
-                        $update_data['shipping_zone'] = $delivery->state;
-                    }
-
-                    list($update_data['shipping_firstname'], $update_data['shipping_lastname']) = explode(
-                        " ",
-                        $delivery->recipientName,
-                        2
-                    );
-                    $addressstring = $delivery->street . ' ' . $delivery->postalCode;
-                    $update_data['shipping_address_1'] = substr($addressstring, 0, 128);
-                    $update_data['shipping_address_2'] = substr($addressstring, 128);
-                    if(!empty($delivery->city))
-                    	$update_data['shipping_city'] = $delivery->city;
-                    $update_data['shipping_postcode'] = $delivery->postalCode;
-                    //$newTotal = $customerdata['Shipping']['ShippingCost']['Net'];
-                }
-
-                /* if (isset($update_data['products'])) {
-                    foreach ($update_data['products'] as $oneProduct) {
-                        $newTotal += $oneProduct['price'] * $oneProduct['quantity'];
-                    }
-                }
-                $update_data['total'] = $newTotal; */
-            }
-            $this->model_payment_payu->customerupdate($order_id, $update_data);
-        }
-    }
-
     //express checkout - OK
     public function expresscheckout()
     {
@@ -515,22 +418,6 @@ class ControllerPaymentPayU extends Controller
         $shippingCostAmount = 0.0;
 
         $decimalPlace = $this->currency->getDecimalPlace();
-
-
-            if (!empty($this->session->data['vouchers'])) {
-                foreach ($this->session->data['vouchers'] as $voucher) {
-                    $this->vouchersAmount += $this->currency->format($voucher['amount']);
-                    $OCRV2['products'] [] = array (
-                        'quantity' => 1,'name' => $voucher['description'],'unitPrice' => $this->toAmount($voucher['amount'])
-                    );
-                }
-            }
-
-            foreach ($this->cart->getProducts() as $item) {
-
-                list($orderType, $OCRV2, $grandTotal) = $this->prepareProductsSection($decimalPlace, $item, $order_info, $OCRV2, $grandTotal);
-
-            }
 
         $shoppingCart = array(
             'GrandTotal' => $grandTotal,
@@ -609,50 +496,6 @@ class ControllerPaymentPayU extends Controller
                     'recipientEmail' => $order_info['email'] );
                 
             }
-            
-            if (!empty($order_info['shipping_method'])) {
-
-                list($shippingCostList, $shippingCostAmount) = $this->prepareShippingMethodsSection($decimalPlace, $order_info);
-                
-
-            } else {
-
-                $shippingCostList = array();
-                $shipping_methods = $this->getShippings(
-                    $this->session->data['order_id'],
-                    $order_info['shipping_country_id']
-                );
-                $country = $this->model_localisation_country->getCountry($order_info['shipping_country_id']);
-
-                foreach ($shipping_methods as $onemethod) {
-                    if(empty($decimalPlace))
-                    {
-                        $onemethod['cost'] *= 100;
-                        $shippingCostAmount = $shippingCost;
-                    }
-
-                    $price = $this->currency->format(
-                            $this->tax->calculate($onemethod['cost'], $onemethod['tax_class_id']),
-                            $order_info['currency_code'],
-                            false,
-                            false
-                    );
-
-                    $price = preg_replace("/[^0-9]/", "", $price);
-
-                    $shippingCostList ['shippingMethods'] [] = array (
-                            'name' => $onemethod['title'],'country' => $country['iso_code_2'],'price' => $price
-                    );
-
-                }
-
-            }
-
-        }
-
-        if(isset($this->session->data['coupon']) || !empty($this->session->data['coupon'])){
-
-            $OCRV2 = $this->prepareCumulatedProductsArray($OCRV2, $order_info, $shippingCostAmount);
         }
 
         $OCRV2 ['merchantPosId'] = OpenPayU_Configuration::getMerchantPosId();
@@ -665,22 +508,27 @@ class ControllerPaymentPayU extends Controller
         $OCRV2 ['currencyCode'] = $order_info['currency_code'];
         
         $total = $order_info['total'];
-        
+
         if(empty($decimalPlace)) {
                  $total = $this->toAmount($total);
         }
-        
+
         $total = str_ireplace(
                             array('.',' '),
                             array('',''),
-                            $this->currency->format($total - $shippingCostAmount, $order_info['currency_code'], false, false));
+                            $this->currency->format($total, $order_info['currency_code'], false, false));
         
         $OCRV2 ['totalAmount'] = $total;
-        $OCRV2 ['extOrderId'] = $this->session->data['order_id'].'-'.microtime();
-        if(isset($shippingCostList))
-        	$OCRV2 ['shippingMethods'] = $shippingCostList['shippingMethods'];
+        $OCRV2['products'][] = array(
+            'quantity' => 1,
+            'name' => "Zamówienie #" . $this->session->data['order_id'],
+            'unitPrice' => $total
+        );
+
+        $OCRV2 ['extOrderId'] = uniqid($this->session->data['order_id'] . '-', true);
+        $OCRV2 ['settings']['invoiceDisabled'] = true;
         $OCRV2 ['buyer'] = $customer;
-        
+
         return $OCRV2;
 
     }
