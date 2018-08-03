@@ -1,3 +1,6 @@
+##2.1.6
+* SHA256 as default
+
 ##2.1.5
 * New payu php library changes included
 
