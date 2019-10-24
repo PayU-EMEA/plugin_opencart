@@ -5,7 +5,7 @@
 -------
 ``This plugin is released under the GPL license.``
 
-**If you have any questions or issues, feel free to contact our technical support: tech@payu.pl.**
+**If you have any questions or issues, feel free to contact our [technical support][ext6].**
 
 PayU account is a web application designed as an e-wallet for shoppers willing to open an account, 
 define their payment options, see their purchase history, and manage personal profiles.
@@ -130,5 +130,6 @@ You can set external resources for the following:
 [ext3]: http://php.net/manual/en/book.hash.php
 [ext4]: http://php.net/manual/en/book.xmlwriter.php
 [ext5]: http://php.net/manual/en/book.xmlreader.php
+[ext6]: https://www.payu.pl/en/help
 
 <!--images:-->
